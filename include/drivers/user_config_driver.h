@@ -12,4 +12,7 @@ typedef struct {
     config_t libconfig_cfg;
 } user_config_t;
 
+user_config_ret_t user_config_init(user_config_t *config, char *config_file);
+user_config_ret_t user_config_deinit(user_config_t *config);
+
 #endif

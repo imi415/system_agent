@@ -8,6 +8,7 @@ set(C_SOURCES
     "src/drivers/user_config_driver.c"
     "src/impl/user_lvgl_impl.c"
     "src/tasks/user_lvgl_task.c"
+    "src/utils/user_log_util.c"
 )
 
 set(C_INCLUDES
@@ -36,3 +37,4 @@ add_executable(${CMAKE_PROJECT_NAME} ${C_SOURCES})
 target_link_libraries(${CMAKE_PROJECT_NAME} ${C_LIBRARIES})
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE ${C_DEFINES})
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${C_INCLUDES})
+target_link_options(${CMAKE_PROJECT_NAME} PRIVATE "-pthread")

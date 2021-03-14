@@ -16,7 +16,7 @@ agent: {
             dc_pin: {
                 path = "/dev/gpiochip1";
                 line = 20;
-            }
-        }
-    }
+            };
+        };
+    };
 };
