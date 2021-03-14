@@ -1,3 +1,6 @@
 [submodule "lib/LittleVGL"]
 	path = lib/LittleVGL
 	url = https://github.com/lvgl/lvgl.git
+[submodule "lib/libconfig"]
+	path = lib/libconfig
+	url = https://github.com/hyperrealm/libconfig.git

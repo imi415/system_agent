@@ -1,0 +1,13 @@
+version = "1.0";
+
+agent: {
+    drivers: {
+        spi: {
+            path = "/dev/spidev0.0"
+        };
+
+        i2c: {
+            path = "/dev/i2c-1"
+        }
+    };
+};

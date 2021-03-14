@@ -4,6 +4,9 @@ project(SystemAgent)
 
 set(C_SOURCES
     "src/main.c"
+    "src/drivers/user_spi_driver.c"
+    "src/drivers/user_config_driver.c"
+    "src/impl/user_lvgl_impl.c"
     "src/tasks/user_lvgl_task.c"
 )
 
@@ -13,7 +16,6 @@ set(C_INCLUDES
 )
 
 set(C_DEFINES
-    "LV_CONF_INCLUDE_SIMPLE"
     "_GNU_SOURCE"
 )
 
@@ -22,6 +24,7 @@ set(C_LIBRARIES
     "iio"
     "mosquitto"
     "pthread"
+    "config"
     "lvgl"
 )
 
