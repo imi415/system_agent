@@ -26,6 +26,7 @@ set(C_LIBRARIES
     "pthread"
     "config"
     "lvgl"
+    "st7789"
 )
 
 add_subdirectory(lib)

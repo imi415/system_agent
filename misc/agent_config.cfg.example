@@ -3,11 +3,20 @@ version = "1.0";
 agent: {
     drivers: {
         spi: {
-            path = "/dev/spidev0.0"
+            path = "/dev/spidev0.0";
         };
 
         i2c: {
-            path = "/dev/i2c-1"
-        }
+            path = "/dev/i2c-1";
+        };
     };
+
+    devices: {
+        lcd: {
+            dc_pin: {
+                path = "/dev/gpiochip1";
+                line = 20;
+            }
+        }
+    }
 };

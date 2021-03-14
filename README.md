@@ -40,6 +40,6 @@ make -j${nproc}
 * Cross:
 ```bash
 mkdir build && cd build
-cmake -DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE_NAME} # Replace to yours
+cmake -DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE_NAME} .. # Replace to yours
 make -j${nproc}
 ```
