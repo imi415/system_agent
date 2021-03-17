@@ -31,7 +31,7 @@ int main(int argc, const char *argv[]) {
     }
 
     user_config_init(&g_config, "config.cfg");
-    if(user_spi_driver_init(&g_spi, "/dev/spidev0.0") != USER_SPI_OK) {
+    if(user_spi_driver_init(&g_spi, "/dev/spidev0.0", 10000000) != USER_SPI_OK) {
         USER_LOG(USER_LOG_FATAL, "Failed to initialize SPI driver.");
         return -2;
     }

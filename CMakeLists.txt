@@ -4,6 +4,7 @@ project(SystemAgent)
 
 set(C_SOURCES
     "src/main.c"
+    "src/drivers/user_gpio_driver.c"
     "src/drivers/user_spi_driver.c"
     "src/drivers/user_config_driver.c"
     "src/impl/user_lvgl_impl.c"

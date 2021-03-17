@@ -12,7 +12,7 @@
 
 #include "drivers/user_spi_driver.h"
 
-user_spi_ret_t user_spi_driver_init(user_spi_driver_t *spi, char *path) {
+user_spi_ret_t user_spi_driver_init(user_spi_driver_t *spi, char *path, uint32_t speed_hz) {
     USER_LOG(USER_LOG_INFO, "SPI driver init.");
 
     spi->spidev_fd = open(path, O_RDWR);
@@ -22,6 +22,8 @@ user_spi_ret_t user_spi_driver_init(user_spi_driver_t *spi, char *path) {
 
         return USER_SPI_ERROR;
     }
+
+    spi->speed_hz = speed_hz;
 
     return USER_SPI_OK;
 }
@@ -38,7 +40,7 @@ user_spi_ret_t user_spi_driver_xfer(user_spi_driver_t *spi, uint8_t *tx_buf,
         .tx_buf = (unsigned long)tx_buf,
         .len = len,
         .cs_change = 0,
-        .speed_hz = 16000000,
+        .speed_hz = spi->speed_hz,
         .bits_per_word = 8
     };
     if(ioctl(spi->spidev_fd, SPI_IOC_MESSAGE(1), &txn) < 0) {
