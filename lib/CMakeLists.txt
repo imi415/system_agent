@@ -17,3 +17,4 @@ set(ST7789_LCD_SOURCES
 )
 
 add_library(st7789 STATIC ${ST7789_LCD_SOURCES})
+target_compile_definitions(st7789 PRIVATE "ST7789_PANEL_ZJY_240")
