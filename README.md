@@ -22,7 +22,7 @@ which runs on Linux.
 
 - [x] LittleVGL
 - [ ] mosquitto
-- [ ] libgpiod
+- [x] libgpiod
 - [ ] libconfig
 - [ ] libpthread
 - [ ] libiio

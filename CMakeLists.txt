@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.10)
 
 project(SystemAgent)
 
+set(ST7789_LCD_DEFINES "ST7789_PANEL_ZJY_240")
+set(LVGL_DEFINES "LV_CONF_INCLUDE_SIMPLE")
+
 set(C_SOURCES
     "src/main.c"
     "src/drivers/user_gpio_driver.c"
@@ -14,11 +17,14 @@ set(C_SOURCES
 
 set(C_INCLUDES
     "lib/LittleVGL"
+    "lib/st7789_lcd"
     "include"
 )
 
 set(C_DEFINES
     "_GNU_SOURCE"
+    ${ST7789_LCD_DEFINES}
+    ${LVGL_DEFINES}
 )
 
 set(C_LIBRARIES

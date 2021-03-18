@@ -9,7 +9,7 @@ set(LVGL_INCLUDES
 
 add_library(lvgl STATIC ${LVGL_SOURCES})
 target_include_directories(lvgl PRIVATE ${LVGL_INCLUDES})
-target_compile_definitions(lvgl PRIVATE "LV_CONF_INCLUDE_SIMPLE")
+target_compile_definitions(lvgl PRIVATE ${LVGL_DEFINES})
 
 
 set(ST7789_LCD_SOURCES
@@ -17,4 +17,4 @@ set(ST7789_LCD_SOURCES
 )
 
 add_library(st7789 STATIC ${ST7789_LCD_SOURCES})
-target_compile_definitions(st7789 PRIVATE "ST7789_PANEL_ZJY_240")
+target_compile_definitions(st7789 PRIVATE ${ST7789_LCD_DEFINES})

@@ -36,9 +36,10 @@ user_spi_ret_t user_spi_driver_deinit(user_spi_driver_t *spi) {
 }
 
 user_spi_ret_t user_spi_driver_xfer(user_spi_driver_t *spi, uint8_t *tx_buf,
-                                    uint8_t rx_buf, uint32_t len) {
+                                    uint8_t *rx_buf, uint32_t len) {
     struct spi_ioc_transfer txn = {
         .tx_buf = (unsigned long)tx_buf,
+        .rx_buf = (unsigned long)rx_buf,
         .len = len,
         .cs_change = 0,
         .speed_hz = spi->speed_hz,
