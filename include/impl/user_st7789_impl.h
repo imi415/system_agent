@@ -7,9 +7,9 @@
 
 typedef struct {
     user_spi_driver_t *spi_driver;
-    user_gpio_t cs_gpio;
-    user_gpio_t dc_gpio;
-    user_gpio_t reset_gpio;
+    user_gpio_t *cs_gpio;
+    user_gpio_t *dc_gpio;
+    user_gpio_t *reset_gpio;
 } user_st7789_impl_t;
 
 int user_st7789_impl_init(void  *handle, user_spi_driver_t *spi_driver);
