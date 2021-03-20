@@ -1,9 +1,6 @@
 [submodule "lib/LittleVGL"]
 	path = lib/LittleVGL
 	url = https://github.com/lvgl/lvgl.git
-[submodule "lib/libconfig"]
-	path = lib/libconfig
-	url = https://github.com/hyperrealm/libconfig.git
 [submodule "lib/st7789_lcd"]
 	path = lib/st7789_lcd
 	url = https://git.minori.work/Embedded_Drivers/st7789_lcd.git
