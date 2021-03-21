@@ -1,10 +1,10 @@
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
-set(CMAKE_SYSROOT ${BUILDROOT_SDK_PATH}/aarch64-buildroot-linux-gnu/sysroot)
+set(CMAKE_SYSROOT $ENV{BUILDROOT_SDK_PATH}/aarch64-buildroot-linux-gnu/sysroot)
 
-set(CMAKE_C_COMPILER ${BUILDROOT_SDK_PATH}/bin/aarch64-buildroot-linux-gnu-gcc)
-set(CMAKE_CXX_COMPILER ${BUILDROOT_SDK_PATH}/bin/aarch64-buildroot-linux-gnu-g++)
+set(CMAKE_C_COMPILER $ENV{BUILDROOT_SDK_PATH}/bin/aarch64-buildroot-linux-gnu-gcc)
+set(CMAKE_CXX_COMPILER $ENV{BUILDROOT_SDK_PATH}/bin/aarch64-buildroot-linux-gnu-g++)
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 

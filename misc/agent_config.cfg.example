@@ -4,6 +4,7 @@ agent: {
     drivers: {
         spi: {
             path = "/dev/spidev0.0";
+            clock_speed = 10000000;
         };
 
         i2c: {
@@ -15,7 +16,11 @@ agent: {
         lcd: {
             dc_pin: {
                 path = "/dev/gpiochip1";
-                line = 20;
+                line = 229;
+            };
+            reset_pin: {
+                path = "/dev/gpiochip1";
+                line = 230;
             };
         };
     };

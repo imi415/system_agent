@@ -7,6 +7,7 @@
 
 #include "utils/user_log_util.h"
 #include "tasks/user_tasks.h"
+#include "impl/user_lvgl_impl.h"
 
 extern uint8_t g_running;
 
@@ -18,6 +19,8 @@ void *user_lv_tick(void *arguments);
 
 int user_lvgl_task_init(void) {
     int ret;
+
+    user_lvgl_impl_init();
 
     USER_LOG(USER_LOG_INFO, "lv_init() called.");
 
@@ -41,6 +44,8 @@ int user_lvgl_task_deinit(void) {
     pthread_join(user_lv_tick_thread, NULL);
 
     USER_LOG(USER_LOG_INFO, "LVGL threads joined.");
+
+    user_lvgl_impl_deinit();
     return 0;
 }
 

@@ -10,11 +10,12 @@ void user_log_print(user_log_level_t level, char *fmt, ...) {
     switch(level) {
         case USER_LOG_DEBUG:
         level_str = "[DEBUG]";
+        break;
         case USER_LOG_INFO:
-        level_str = "[INFO]";
+        level_str = "[ INFO]";
         break;
         case USER_LOG_WARN:
-        level_str = "[WARN]";
+        level_str = "[ WARN]";
         break;
         case USER_LOG_ERROR:
         level_str = "[ERROR]";

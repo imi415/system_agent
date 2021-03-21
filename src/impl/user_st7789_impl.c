@@ -3,9 +3,33 @@
 
 #include "lvgl.h"
 
+#include "utils/user_log_util.h"
+
 #include "impl/user_st7789_impl.h"
 
-int user_st7789_impl_init(void *handle, user_spi_driver_t *spi_driver) {
+extern user_config_t g_config;
+extern user_spi_driver_t g_spi;
+
+int _user_st7789_impl_init_pin(user_gpio_t *gpio, char *pin_name, uint8_t is_output) {
+    char *chip;
+    uint32_t offset;
+
+    char name_buffer[64];
+    snprintf(name_buffer, 64, "agent.devices.lcd.%s_pin.path", pin_name);
+
+    chip = user_config_lookup_string(&g_config, name_buffer);
+    if(chip == NULL) return -1;
+
+    snprintf(name_buffer, 64, "agent.devices.lcd.%s_pin.line", pin_name);
+
+    if(user_config_lookup_int(&g_config, name_buffer, &offset) != 0) return -2;
+
+    if(user_gpio_init(gpio, chip, offset, is_output) != 0) return -3;
+
+    return 0;
+}
+
+int user_st7789_impl_init(void *handle) {
 
     user_st7789_impl_t *impl = handle;
 
@@ -16,16 +40,24 @@ int user_st7789_impl_init(void *handle, user_spi_driver_t *spi_driver) {
     impl->reset_gpio = malloc(sizeof(user_gpio_t));
     if(!impl->reset_gpio) return -1;
 
-    if(user_gpio_init(impl->cs_gpio, "/dev/gpiochip0", 0) != USER_GPIO_OK)
-        return -1;
-    if(user_gpio_init(impl->dc_gpio, "/dev/gpiochip0", 0) != USER_GPIO_OK)
+    if(_user_st7789_impl_init_pin(impl->cs_gpio, "cs", 1) != 0) {
+        free(impl->cs_gpio);
+        impl->cs_gpio = NULL;
+        USER_LOG(USER_LOG_WARN, "No CS pin found, SPI must be correctly configured.");
+    }
+
+    if(_user_st7789_impl_init_pin(impl->dc_gpio, "dc", 1) != 0) {
+        USER_LOG(USER_LOG_ERROR, "DC pin not found.");
         return -2;
-    if(user_gpio_init(impl->reset_gpio, "/dev/gpiochip0", 0) != USER_GPIO_OK)
-        return -3;
+    }
 
-    if(spi_driver == NULL) return -4;
+    if(_user_st7789_impl_init_pin(impl->reset_gpio, "reset", 1) != 0) {
+        free(impl->reset_gpio);
+        impl->reset_gpio = NULL;
+        USER_LOG(USER_LOG_WARN, "No Reset pin found.");
+    }
 
-    impl->spi_driver = spi_driver;
+    impl->spi_driver = &g_spi;
 
     return 0;
 }
@@ -38,9 +70,9 @@ void user_st7789_impl_deinit(void *handle) {
     user_gpio_deinit(impl->dc_gpio);
     user_gpio_deinit(impl->reset_gpio);
 
-    free(impl->cs_gpio);
-    free(impl->dc_gpio);
-    free(impl->reset_gpio);
+    if(impl->cs_gpio) free(impl->cs_gpio);
+    if(impl->dc_gpio) free(impl->dc_gpio);
+    if(impl->reset_gpio) free(impl->reset_gpio);
 }
 
 st7789_ret_t user_st7789_impl_write_cmd(void *handle, uint8_t *cmd,
@@ -48,15 +80,15 @@ st7789_ret_t user_st7789_impl_write_cmd(void *handle, uint8_t *cmd,
 
     user_st7789_impl_t *impl = handle;
 
-    if(user_gpio_set(impl->dc_gpio, 0) != USER_GPIO_OK) return ST7789_ERROR;
-    if(user_gpio_set(impl->cs_gpio, 0) != USER_GPIO_OK) return ST7789_ERROR;
+    if(impl->dc_gpio && (user_gpio_set(impl->dc_gpio, 0) != 0)) return ST7789_ERROR;
+    if(impl->cs_gpio && (user_gpio_set(impl->cs_gpio, 0) != 0)) return ST7789_ERROR;
 
     // ST7789VW requires parameters to be sent with DC=0.
-    if(user_spi_driver_xfer(impl->spi_driver, cmd, NULL, len) != USER_SPI_OK) {
-        user_gpio_set(impl->cs_gpio, 1);
+    if(user_spi_driver_xfer(impl->spi_driver, cmd, NULL, len) != 0) {
+        if(impl->cs_gpio) user_gpio_set(impl->cs_gpio, 1);
         return ST7789_ERROR;
     }
-    if(user_gpio_set(impl->cs_gpio, 1) != USER_GPIO_OK) return ST7789_ERROR;
+    if(impl->cs_gpio && (user_gpio_set(impl->cs_gpio, 1) != 0)) return ST7789_ERROR;
 
     return ST7789_OK;
 }
@@ -65,13 +97,13 @@ st7789_ret_t user_st7789_impl_write_data(void *handle, uint8_t *data,
                                          uint32_t len) {
     user_st7789_impl_t *impl = handle;
 
-    if(user_gpio_set(impl->dc_gpio, 1) != USER_GPIO_OK) return ST7789_ERROR;
-    if(user_gpio_set(impl->cs_gpio, 0) != USER_GPIO_OK) return ST7789_ERROR;
-    if(user_spi_driver_xfer(impl->spi_driver, data, NULL, len) != USER_SPI_OK) {
-        user_gpio_set(impl->cs_gpio, 1);
+    if(impl->dc_gpio && (user_gpio_set(impl->dc_gpio, 1) != 0)) return ST7789_ERROR;
+    if(impl->cs_gpio && (user_gpio_set(impl->cs_gpio, 0) != 0)) return ST7789_ERROR;
+    if(user_spi_driver_xfer(impl->spi_driver, data, NULL, len) != 0) {
+        if(impl->cs_gpio) user_gpio_set(impl->cs_gpio, 1);
         return ST7789_ERROR;
     }
-    if(user_gpio_set(impl->cs_gpio, 1) != USER_GPIO_OK) return ST7789_ERROR;
+    if(impl->cs_gpio && (user_gpio_set(impl->cs_gpio, 1) != 0)) return ST7789_ERROR;
 
     return ST7789_OK;
 }
@@ -82,7 +114,7 @@ st7789_ret_t user_st7789_impl_reset(void *handle) {
 
     if(&impl->reset_gpio == NULL) return ST7789_OK;
 
-    if(user_gpio_set(impl->reset_gpio, 0) != USER_GPIO_OK) return ST7789_ERROR;
+    if(user_gpio_set(impl->reset_gpio, 0) != 0) return ST7789_ERROR;
     usleep(10 * 1000); // Sleep 10ms
-    if(user_gpio_set(impl->cs_gpio, 1) != USER_GPIO_OK) return ST7789_ERROR;
+    if(user_gpio_set(impl->cs_gpio, 1) != 0) return ST7789_ERROR;
 }

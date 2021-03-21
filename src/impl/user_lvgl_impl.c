@@ -2,7 +2,7 @@
 
 #include "impl/user_st7789_impl.h"
 
-extern user_spi_driver_t g_spi;
+#include "impl/user_lvgl_impl.h"
 
 user_st7789_impl_t g_lcd_impl;
 st7789_lcd_t g_lcd = {
@@ -21,5 +21,10 @@ st7789_lcd_t g_lcd = {
 };
 
 void user_lvgl_impl_init(void) {
-    user_st7789_impl_init(&g_lcd_impl, &g_spi);
+    user_st7789_impl_init(&g_lcd_impl);
+    st7789_lcd_init(&g_lcd);
+}
+
+void user_lvgl_impl_deinit(void) {
+    user_st7789_impl_deinit(&g_lcd_impl);
 }

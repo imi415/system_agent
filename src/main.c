@@ -30,8 +30,24 @@ int main(int argc, const char *argv[]) {
         return -1;
     }
 
-    user_config_init(&g_config, "config.cfg");
-    if(user_spi_driver_init(&g_spi, "/dev/spidev0.0", 10000000) != USER_SPI_OK) {
+    if(user_config_init(&g_config, "config.cfg") != 0) {
+        USER_LOG(USER_LOG_FATAL, "Failed to load config file.");
+        return -2;
+    }
+
+    char *spi_path = user_config_lookup_string(&g_config, "agent.drivers.spi.path");
+    if(spi_path == NULL) {
+        USER_LOG(USER_LOG_ERROR, "Failed to find SPI device from config, using default.");
+        spi_path = "/dev/spidev0.0";
+    }
+
+    int spi_speed;
+    if(user_config_lookup_int(&g_config, "agent.drivers.spi.clock_speed", &spi_speed) != 0) {
+        USER_LOG(USER_LOG_ERROR, "Failed to find SPI speed from config, using default.");
+        spi_speed = 10000000;
+    }
+
+    if(user_spi_driver_init(&g_spi, spi_path, spi_speed) != 0) {
         USER_LOG(USER_LOG_FATAL, "Failed to initialize SPI driver.");
         return -2;
     }
