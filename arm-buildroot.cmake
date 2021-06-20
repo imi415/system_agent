@@ -1,10 +1,12 @@
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
-set(CMAKE_SYSROOT $ENV{BUILDROOT_SDK_PATH}/arm-buildroot-linux-gnueabihf/sysroot)
+set(BUILDROOT_VARIANT "buildroot")
 
-set(CMAKE_C_COMPILER $ENV{BUILDROOT_SDK_PATH}/bin/arm-buildroot-linux-gnueabihf-gcc)
-set(CMAKE_CXX_COMPILER $ENV{BUILDROOT_SDK_PATH}/bin/arm-buildroot-linux-gnueabihf-g++)
+set(CMAKE_SYSROOT $ENV{BUILDROOT_SDK_PATH}/arm-${BUILDROOT_VARIANT}-linux-gnueabihf/sysroot)
+
+set(CMAKE_C_COMPILER $ENV{BUILDROOT_SDK_PATH}/bin/arm-${BUILDROOT_VARIANT}-linux-gnueabihf-gcc)
+set(CMAKE_CXX_COMPILER $ENV{BUILDROOT_SDK_PATH}/bin/arm-${BUILDROOT_VARIANT}-linux-gnueabihf-g++)
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 
