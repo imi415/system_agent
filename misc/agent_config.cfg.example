@@ -22,6 +22,10 @@ agent: {
                 path = "/dev/gpiochip1";
                 line = 230;
             };
+            blk_pin: {
+                path = "/dev/gpiochip1";
+                line = 231;
+            };
         };
     };
 };

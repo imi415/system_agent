@@ -27,7 +27,7 @@ int user_spi_driver_init(user_spi_driver_t *spi, char *path,
     spi->speed_hz = speed_hz;
 
     uint32_t mode = SPI_MODE_0;
-    if(ioctl(spi->spidev_fd, SPI_IOC_WR_MODE32, &mode) == -1) {
+    if(ioctl(spi->spidev_fd, SPI_IOC_WR_MODE, &mode) == -1) {
         USER_LOG(USER_LOG_ERROR, "Failed to set SPI mode.");
         return -1;
     }
@@ -55,31 +55,21 @@ int user_spi_driver_xfer(user_spi_driver_t *spi, uint8_t *tx_buf,
         .tx_buf = (unsigned long)tx_buf,
         .rx_buf = (unsigned long)rx_buf,
         .len = len,
-        .cs_change = 0,
         .speed_hz = spi->speed_hz,
         .bits_per_word = 8,
         .tx_nbits = 1,
         .rx_nbits = 1,
     };
 
-    USER_LOG(USER_LOG_DEBUG, "SPI 1st byte: 0x%02x.", tx_buf[0]);
-
-    while(len > SPIDEV_MAX_TRANSFER_SIZE) {
-        txn.len = SPIDEV_MAX_TRANSFER_SIZE;
-        len -= SPIDEV_MAX_TRANSFER_SIZE;
-
-        USER_LOG(USER_LOG_DEBUG, "SPI Tx len: %d.", txn.len);
-
-        if(ioctl(spi->spidev_fd, SPI_IOC_MESSAGE(1), &txn) < 0) {
-            USER_LOG(USER_LOG_ERROR, "SPI transaction error.");
-            return -1;
+    uint32_t xfer_count = (len / SPIDEV_MAX_TRANSFER_SIZE) + ((len % SPIDEV_MAX_TRANSFER_SIZE) ? 1 : 0);
+    for(uint32_t i = 0; i < xfer_count; i++) {
+        if(txn.tx_buf != 0) txn.tx_buf = (unsigned long)&tx_buf[i * SPIDEV_MAX_TRANSFER_SIZE];
+        if(txn.rx_buf != 0) txn.rx_buf = (unsigned long)&rx_buf[i * SPIDEV_MAX_TRANSFER_SIZE];
+        if(i == xfer_count - 1) {
+            txn.len = len % SPIDEV_MAX_TRANSFER_SIZE;
+        } else {
+            txn.len = SPIDEV_MAX_TRANSFER_SIZE;
         }
-    }
-
-    if(len > 0) {
-        txn.len = len;
-
-        USER_LOG(USER_LOG_DEBUG, "SPI Tx len: %d.", txn.len);
 
         if(ioctl(spi->spidev_fd, SPI_IOC_MESSAGE(1), &txn) < 0) {
             USER_LOG(USER_LOG_ERROR, "SPI transaction error.");

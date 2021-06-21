@@ -37,7 +37,7 @@ int user_config_lookup_int(user_config_t *config, char *path, int *value) {
     return 0;
 }
 
-int user_config_lookup_float(user_config_t *config, char *path, float *value) {
+int user_config_lookup_double(user_config_t *config, char *path, double *value) {
     if(config_lookup_float(config->libconfig_cfg, path, value) == 0) {
         return -1;
     }

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(SystemAgent)
 
-set(ST7789_LCD_DEFINES "ST7789_PANEL_ZJY_240")
+set(ST7789_LCD_DEFINES "ST7789_PANEL_ZJY_320")
 set(LVGL_DEFINES "LV_CONF_INCLUDE_SIMPLE")
 
 set(C_SOURCES
@@ -13,6 +13,7 @@ set(C_SOURCES
     "src/impl/user_st7789_impl.c"
     "src/impl/user_lvgl_impl.c"
     "src/tasks/user_lvgl_task.c"
+    "src/tasks/user_clock_task.c"
     "src/utils/user_log_util.c"
 )
 

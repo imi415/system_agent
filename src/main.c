@@ -53,12 +53,14 @@ int main(int argc, const char *argv[]) {
     }
 
     user_lvgl_task_init();
+    user_clock_task_init();
 
     USER_LOG(USER_LOG_INFO, "Initialized, main thread sleeping.");
     while(g_running) {
         sleep(1);
     }
 
+    user_clock_task_deinit();
     user_lvgl_task_deinit();
 
     user_spi_driver_deinit(&g_spi);
