@@ -14,11 +14,16 @@ which runs on Linux.
 
 ## Other supported devices
 
-- [ ] ST7789 IPS TFT LCD(240px * 240px)
+- [x] 2.0" IPS TFT LCD(320px * 240px), driver IC: ST7789VW
 - [ ] General GPIO based buttons
 - [ ] Genetal GPIO based LEDs
 
-## Libraries used
+## Drivers implemented
+- [x] GPIO driver
+- [x] SPI device driver
+- [ ] Config K-V driver
+
+## Third party libraries used
 
 - [x] LittleVGL
 - [ ] mosquitto
