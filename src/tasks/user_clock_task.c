@@ -5,10 +5,13 @@
 
 #include "lvgl.h"
 
+#include "drivers/user_config_driver.h"
+
 #include "utils/user_log_util.h"
 
 extern uint8_t g_running;
 extern uint8_t g_lvgl_ready;
+extern user_config_t g_config;
 
 pthread_t user_clock_task_thread;
 
@@ -39,21 +42,14 @@ void *user_clock_task(void *arguments) {
     while(g_running && !g_lvgl_ready) {
         sleep(1);
     }
-    lv_obj_t * label1 = lv_label_create(lv_scr_act());
-    lv_label_set_long_mode(label1, LV_LABEL_LONG_WRAP);     /*Break the long lines*/
-    lv_label_set_recolor(label1, true);                      /*Enable re-coloring by commands in the text*/
-    lv_label_set_text(label1, "#0000ff Re-color# #ff00ff words# #ff0000 of a# label, align the lines to the center "
-                              "and wrap long text automatically.");
-    lv_obj_set_width(label1, 150);  /*Set smaller width to make the lines wrap*/
-    lv_obj_set_style_text_align(label1, LV_TEXT_ALIGN_CENTER, 0);
-    lv_obj_align(label1, LV_ALIGN_CENTER, 0, -40);
 
+    char *background_path = user_config_lookup_string(&g_config, "agent.theme.background");
 
-    lv_obj_t * label2 = lv_label_create(lv_scr_act());
-    lv_label_set_long_mode(label2, LV_LABEL_LONG_SCROLL_CIRCULAR);     /*Circular scroll*/
-    lv_obj_set_width(label2, 150);
-    lv_label_set_text(label2, "It is a circularly scrolling text. ");
-    lv_obj_align(label2, LV_ALIGN_CENTER, 0, 40);
+    lv_obj_t * bg_image = lv_img_create(lv_scr_act());
+    if(background_path != NULL) {
+        lv_img_set_src(bg_image, background_path);
+    }
+    
     while(g_running) {
         sleep(1);
     }

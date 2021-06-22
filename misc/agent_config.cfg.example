@@ -22,10 +22,20 @@ agent: {
                 path = "/dev/gpiochip1";
                 line = 230;
             };
-            blk_pin: {
+            backlight_pin: {
                 path = "/dev/gpiochip1";
                 line = 231;
             };
         };
+    };
+
+    libraries: {
+        lvgl: {
+            fs_base = "";
+        };
+    };
+
+    theme: {
+        background = "A:background.bin"
     };
 };

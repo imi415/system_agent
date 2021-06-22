@@ -21,6 +21,7 @@ pthread_t user_lv_tick_thread;
 static lv_disp_draw_buf_t s_disp_buf;
 static lv_color_t s_pix_buf[2][PIXBUF_SIZE];
 static lv_disp_drv_t s_disp_drv;
+static lv_fs_drv_t s_fs_drv;
 
 void *user_lv_task(void *arguments);
 void *user_lv_tick(void *arguments);
@@ -43,6 +44,17 @@ int user_lvgl_task_init(void) {
     s_disp_drv.ver_res = 240;
     s_disp_drv.flush_cb = user_lvgl_impl_flush_cb;
     lv_disp_t *disp = lv_disp_drv_register(&s_disp_drv);
+
+    lv_fs_drv_init(&s_fs_drv);
+    s_fs_drv.letter = 'A';
+    s_fs_drv.open_cb = user_lvgl_impl_fs_open_cb;
+    s_fs_drv.close_cb = user_lvgl_impl_fs_close_cb;
+    s_fs_drv.read_cb = user_lvgl_impl_fs_read_cb;
+    s_fs_drv.write_cb = user_lvgl_impl_fs_write_cb;
+    s_fs_drv.seek_cb = user_lvgl_impl_fs_seek_cb;
+    s_fs_drv.tell_cb = user_lvgl_impl_fs_tell_cb;
+
+    lv_fs_drv_register(&s_fs_drv);
 
     ret = pthread_create(&user_lv_task_thread, NULL, user_lv_task, NULL);
     if(ret) return ret;
