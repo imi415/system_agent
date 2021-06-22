@@ -30,5 +30,6 @@ void user_lvgl_impl_flush_cb(lv_disp_drv_t * disp_drv, const lv_area_t * area, l
 }
 
 void user_lvgl_impl_deinit(void) {
+    st7789_lcd_display(&g_lcd, 0);
     user_st7789_impl_deinit(&g_lcd_impl);
 }
