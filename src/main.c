@@ -35,6 +35,10 @@ int main(int argc, const char *argv[]) {
         return -2;
     }
 
+    user_log_level_t log_level = USER_LOG_INFO;
+    user_config_lookup_int(&g_config, "agent.common.log_level", (int *)&log_level);
+    user_log_set_level(log_level);
+
     char *spi_path = user_config_lookup_string(&g_config, "agent.drivers.spi.path");
     if(spi_path == NULL) {
         USER_LOG(USER_LOG_ERROR, "Failed to find SPI device from config, using default.");

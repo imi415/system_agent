@@ -1,6 +1,10 @@
 version = "1.0";
 
 agent: {
+    common: {
+        log_level = 1;
+    };
+
     drivers: {
         spi: {
             path = "/dev/spidev0.0";
