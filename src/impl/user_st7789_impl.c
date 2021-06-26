@@ -39,6 +39,8 @@ int user_st7789_impl_init(void *handle) {
     if(!impl->dc_gpio) return -1;
     impl->reset_gpio = malloc(sizeof(user_gpio_t));
     if(!impl->reset_gpio) return -1;
+    impl->bl_gpio = malloc(sizeof(user_gpio_t));
+    if(!impl->bl_gpio) return -1;
 
     if(_user_st7789_impl_init_pin(impl->cs_gpio, "cs", 1) != 0) {
         free(impl->cs_gpio);
@@ -55,6 +57,12 @@ int user_st7789_impl_init(void *handle) {
         free(impl->reset_gpio);
         impl->reset_gpio = NULL;
         USER_LOG(USER_LOG_WARN, "No Reset pin found.");
+    }
+
+    if(_user_st7789_impl_init_pin(impl->bl_gpio, "backlight", 1) != 0) {
+        free(impl->bl_gpio);
+        impl->bl_gpio = NULL;
+        USER_LOG(USER_LOG_WARN, "No backlight pin found.");
     }
 
     impl->spi_driver = &g_spi;
@@ -77,6 +85,10 @@ void user_st7789_impl_deinit(void *handle) {
     if(impl->reset_gpio) {
         user_gpio_deinit(impl->reset_gpio);
         free(impl->reset_gpio);
+    }
+    if(impl->bl_gpio) {
+        user_gpio_deinit(impl->bl_gpio);
+        free(impl->bl_gpio);
     }
 }
 
@@ -133,6 +145,16 @@ st7789_ret_t user_st7789_impl_reset(void *handle) {
 
     if(impl->cs_gpio == NULL) return ST7789_OK;
     if(user_gpio_set(impl->cs_gpio, 1) != 0) return ST7789_ERROR;
+
+    return ST7789_OK;
+}
+
+st7789_ret_t user_st7789_impl_backlight(void *handle, uint8_t on) {
+    user_st7789_impl_t *impl = handle;
+
+    if(impl->bl_gpio == NULL) return ST7789_OK;
+
+    if(user_gpio_set(impl->bl_gpio, (on ? 0 : 1)) != 0) return ST7789_ERROR;
 
     return ST7789_OK;
 }

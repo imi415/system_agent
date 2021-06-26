@@ -18,6 +18,7 @@ st7789_lcd_t g_lcd = {
             .write_cmd_cb = user_st7789_impl_write_cmd,
             .write_data_cb = user_st7789_impl_write_data,
             .reset_cb = user_st7789_impl_reset,
+            .backlight_cb = user_st7789_impl_backlight,
         },
     .config =
         {
@@ -92,7 +93,8 @@ lv_fs_res_t user_lvgl_impl_fs_read_cb(lv_fs_drv_t *drv, void *file_p, void *buf,
     if(fd > 0) {
         *br = read(fd, buf, btr);
 
-        USER_LOG(USER_LOG_DEBUG, "Called read() on fd %d, len=%d, rlen=%d", fd, btr, *br);
+        USER_LOG(USER_LOG_DEBUG, "Called read() on fd %d, len=%d, rlen=%d", fd,
+                 btr, *br);
 
         if(*br < 0) return LV_FS_RES_FS_ERR;
         return LV_FS_RES_OK;
@@ -135,7 +137,8 @@ lv_fs_res_t user_lvgl_impl_fs_seek_cb(lv_fs_drv_t *drv, void *file_p,
     if(fd > 0) {
         int new_offset = lseek(fd, pos, l_whence);
 
-        USER_LOG(USER_LOG_DEBUG, "Called seek() on fd %d, pos=%d, whence=%d", fd, pos, l_whence);
+        USER_LOG(USER_LOG_DEBUG, "Called seek() on fd %d, pos=%d, whence=%d",
+                 fd, pos, l_whence);
 
         if(new_offset < 0) return LV_FS_RES_FS_ERR;
         return LV_FS_RES_OK;
