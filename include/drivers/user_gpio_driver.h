@@ -15,13 +15,6 @@ typedef enum {
     USER_GPIO_INTR_FALLING = 0x02,
 } user_gpio_intr_t;
 
-typedef enum {
-    USER_GPIO_EVENT_FALLING,
-    USER_GPIO_EVENT_RISING
-} user_gpio_event_t;
-
-typedef void (*gpio_irq_callback_t)(void *user_data, user_gpio_event_t event);
-
 int user_gpio_init(user_gpio_t *gpio, char *chip, uint32_t offset,
                    uint8_t output_enabled);
 int user_gpio_set(user_gpio_t *gpio, uint8_t value);
