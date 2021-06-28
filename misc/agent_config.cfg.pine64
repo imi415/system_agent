@@ -19,15 +19,15 @@ agent: {
             };
             dc_pin: {
                 path = "/dev/gpiochip1";
-                line = 229;
+                line = 78;
             };
             reset_pin: {
                 path = "/dev/gpiochip1";
-                line = 230;
+                line = 77;
             };
             backlight_pin: {
                 path = "/dev/gpiochip1";
-                line = 231;
+                line = 68;
             };
         };
     };
