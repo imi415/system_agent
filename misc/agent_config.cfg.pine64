@@ -14,8 +14,8 @@ agent: {
     devices: {
         lcd: {
             spi: {
-                path = "/dev/spidev0.0";
-                clock_speed = 10000000;
+                path = "/dev/spidev0.1";
+                clock_speed = 24000000;
             };
             dc_pin: {
                 path = "/dev/gpiochip1";
@@ -34,11 +34,11 @@ agent: {
 
     libraries: {
         lvgl: {
-            fs_base = "";
+            fs_base = "lvgl_fs";
         };
     };
 
     theme: {
-        background = "A:background.bin"
+        background = "A:images/background.bin"
     };
 };

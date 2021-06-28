@@ -2,8 +2,10 @@
 
 #include "drivers/user_gpio_driver.h"
 
+#define CONSUMER_NAME "SA"
 
-int user_gpio_init(user_gpio_t *gpio, char *chip, uint32_t offset, uint8_t output_enabled) {
+int user_gpio_init(user_gpio_t *gpio, char *chip, uint32_t offset,
+                   uint8_t output_enabled) {
 
     gpio->chip = gpiod_chip_open(chip);
     if(gpio->chip == NULL) {
@@ -21,9 +23,9 @@ int user_gpio_init(user_gpio_t *gpio, char *chip, uint32_t offset, uint8_t outpu
     int ret;
 
     if(output_enabled) {
-        ret = gpiod_line_request_output(gpio->line, "SA", 1);
+        ret = gpiod_line_request_output(gpio->line, CONSUMER_NAME, 1);
     } else {
-        gpiod_line_request_input(gpio->line, "SA");
+        gpiod_line_request_input(gpio->line, CONSUMER_NAME);
     }
 
     if(ret != 0) {
@@ -45,7 +47,36 @@ int user_gpio_set(user_gpio_t *gpio, uint8_t value) {
     return 0;
 }
 
-int user_gpio_get(user_gpio_t *gpio, uint8_t *value){
+int user_gpio_setup_intr(user_gpio_t *gpio, user_gpio_intr_t type) {
+
+    int request_type = 0;
+    if(type == USER_GPIO_EVENT_RISING)
+        request_type = GPIOD_LINE_REQUEST_EVENT_RISING_EDGE;
+    else if(type == USER_GPIO_EVENT_FALLING)
+        request_type = GPIOD_LINE_REQUEST_EVENT_FALLING_EDGE;
+    else if(type == USER_GPIO_EVENT_RISING | USER_GPIO_INTR_FALLING)
+        request_type = GPIOD_LINE_REQUEST_EVENT_BOTH_EDGES;
+
+    const struct gpiod_line_request_config config =
+        {
+            .consumer = CONSUMER_NAME,
+            .request_type = request_type,
+        };
+
+    int ret = gpiod_line_request(gpio->line, &config, 0);
+    if(ret != 0) {
+        USER_LOG(USER_LOG_ERROR, "Failed to reserve GPIO line for interrupt.");
+    }
+
+    return ret;
+}
+
+int user_gpio_intr_poll(user_gpio_t *gpio) {
+    
+    return 0;
+}
+
+int user_gpio_get(user_gpio_t *gpio, uint8_t *value) {
     *value = gpiod_line_get_value(gpio->line);
 
     return 0;

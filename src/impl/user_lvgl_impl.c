@@ -42,6 +42,10 @@ void user_lvgl_impl_flush_cb(lv_disp_drv_t *disp_drv, const lv_area_t *area,
     lv_disp_flush_ready(disp_drv);
 }
 
+bool user_lvgl_indev_read_cb(lv_indev_drv_t *drv, lv_indev_data_t *data) {
+    //
+}
+
 void *user_lvgl_impl_fs_open_cb(lv_fs_drv_t *drv, const char *path,
                                 lv_fs_mode_t mode) {
     char canonical_path[256];
