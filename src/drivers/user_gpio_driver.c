@@ -25,7 +25,7 @@ int user_gpio_init(user_gpio_t *gpio, char *chip, uint32_t offset,
     if(output_enabled) {
         ret = gpiod_line_request_output(gpio->line, CONSUMER_NAME, 1);
     } else {
-        gpiod_line_request_input(gpio->line, CONSUMER_NAME);
+        ret = gpiod_line_request_input(gpio->line, CONSUMER_NAME);
     }
 
     if(ret != 0) {
@@ -57,11 +57,10 @@ int user_gpio_setup_intr(user_gpio_t *gpio, user_gpio_intr_t type) {
     else if(type == USER_GPIO_INTR_RISING | USER_GPIO_INTR_FALLING)
         request_type = GPIOD_LINE_REQUEST_EVENT_BOTH_EDGES;
 
-    const struct gpiod_line_request_config config =
-        {
-            .consumer = CONSUMER_NAME,
-            .request_type = request_type,
-        };
+    const struct gpiod_line_request_config config = {
+        .consumer = CONSUMER_NAME,
+        .request_type = request_type,
+    };
 
     int ret = gpiod_line_request(gpio->line, &config, 0);
     if(ret != 0) {
@@ -71,14 +70,28 @@ int user_gpio_setup_intr(user_gpio_t *gpio, user_gpio_intr_t type) {
     return ret;
 }
 
-int user_gpio_intr_poll(user_gpio_t *gpio, uint32_t timeout_ms) {
+int user_gpio_intr_poll(user_gpio_t *gpio, uint32_t timeout_ms,
+                        user_gpio_intr_t *event) {
     struct timespec ts = {
         .tv_sec = timeout_ms / 1000,
-        .tv_nsec = (timeout_ms % 1000) * 1000000000
+        .tv_nsec = (timeout_ms % 1000) * 1000000000,
     };
-    int ret = gpiod_line_event_wait(gpio->line, &ts);
+    struct gpiod_line_event ev;
 
-    return ret;
+    int ret = gpiod_line_event_wait(gpio->line, &ts);
+    if(ret > 0) {
+        ret = gpiod_line_event_read(gpio->line, &ev);
+    }
+
+    if(ret < 0) return ret;
+
+    if(ev.event_type == GPIOD_LINE_EVENT_RISING_EDGE) {
+        *event = USER_GPIO_INTR_RISING;
+    } else {
+        *event = USER_GPIO_INTR_FALLING;
+    }
+
+    return 0;
 }
 
 int user_gpio_get(user_gpio_t *gpio, uint8_t *value) {

@@ -6,12 +6,14 @@
 
 #include "impl/user_lvgl_impl.h"
 #include "impl/user_st7789_impl.h"
+#include "impl/user_stick_impl.h"
 
 #include "utils/user_log_util.h"
 
 extern user_config_t g_config;
 
 user_st7789_impl_t g_lcd_impl;
+user_stick_impl_t g_stick_impl;
 st7789_lcd_t g_lcd = {
     .cb =
         {
@@ -30,8 +32,11 @@ st7789_lcd_t g_lcd = {
     .user_data = &g_lcd_impl,
 };
 
+static user_stick_key_t s_previous_key = USER_STICK_NONE;
+
 void user_lvgl_impl_init(void) {
     user_st7789_impl_init(&g_lcd_impl);
+    user_stick_impl_init(&g_stick_impl);
     st7789_lcd_init(&g_lcd);
 }
 
@@ -42,8 +47,44 @@ void user_lvgl_impl_flush_cb(lv_disp_drv_t *disp_drv, const lv_area_t *area,
     lv_disp_flush_ready(disp_drv);
 }
 
-bool user_lvgl_indev_read_cb(lv_indev_drv_t *drv, lv_indev_data_t *data) {
-    //
+void user_lvgl_impl_indev_read_cb(lv_indev_drv_t *drv, lv_indev_data_t *data) {
+    user_stick_key_t key = user_stick_impl_read(&g_stick_impl);
+    user_stick_key_t key_to_determine = USER_STICK_NONE;
+    if(key != s_previous_key) {                 // Key state changed
+        if(s_previous_key == USER_STICK_NONE) { // New key pressed
+            data->state = LV_INDEV_STATE_PR;
+            key_to_determine = key;
+        } else {
+            data->state = LV_INDEV_STATE_REL;
+            key_to_determine = s_previous_key;
+        }
+        switch(key_to_determine) {
+        case USER_STICK_LEFT:
+            data->key = LV_KEY_LEFT;
+            break;
+        case USER_STICK_RIGHT:
+            data->key = LV_KEY_RIGHT;
+            break;
+        case USER_STICK_UP:
+            data->key = LV_KEY_UP;
+            break;
+        case USER_STICK_DOWN:
+            data->key = LV_KEY_DOWN;
+            break;
+        case USER_STICK_PUSH:
+            data->key = LV_KEY_ENTER;
+            break;
+        default:
+            data->state = LV_INDEV_STATE_REL;
+            break;
+        }
+        s_previous_key = key;
+        USER_LOG(USER_LOG_INFO, "Stick event: %d, key: %d", data->state, data->key);
+    }
+}
+
+void user_lvgl_impl_log_cb(const char *buf) {
+    USER_LOG(USER_LOG_DEBUG, "LVGL: %s", buf);
 }
 
 void *user_lvgl_impl_fs_open_cb(lv_fs_drv_t *drv, const char *path,

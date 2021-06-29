@@ -22,6 +22,7 @@ static lv_disp_draw_buf_t s_disp_buf;
 static lv_color_t s_pix_buf[2][PIXBUF_SIZE];
 static lv_disp_drv_t s_disp_drv;
 static lv_fs_drv_t s_fs_drv;
+static lv_indev_drv_t s_indev_drv;
 
 void *user_lv_task(void *arguments);
 void *user_lv_tick(void *arguments);
@@ -35,15 +36,23 @@ int user_lvgl_task_init(void) {
 
     lv_init();
 
+    lv_log_register_print_cb(user_lvgl_impl_log_cb);
+
     lv_disp_draw_buf_init(&s_disp_buf, s_pix_buf[0], s_pix_buf[1], PIXBUF_SIZE);
 
-    
     lv_disp_drv_init(&s_disp_drv);
     s_disp_drv.draw_buf = &s_disp_buf;
     s_disp_drv.hor_res = 320;
     s_disp_drv.ver_res = 240;
     s_disp_drv.flush_cb = user_lvgl_impl_flush_cb;
     lv_disp_t *disp = lv_disp_drv_register(&s_disp_drv);
+
+    lv_indev_drv_init(&s_indev_drv);
+    s_indev_drv.type = LV_INDEV_TYPE_KEYPAD;
+    s_indev_drv.read_cb = user_lvgl_impl_indev_read_cb;
+    lv_indev_t *indev = lv_indev_drv_register(&s_indev_drv);
+
+    lv_group_t *indev_group = lv_group_create();
 
     lv_fs_drv_init(&s_fs_drv);
     s_fs_drv.letter = 'A';

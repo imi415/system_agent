@@ -9,7 +9,7 @@
 
 extern user_config_t g_config;
 
-int _user_st7789_impl_init_pin(user_gpio_t *gpio, char *pin_name, uint8_t is_output) {
+static int user_st7789_impl_init_pin(user_gpio_t *gpio, char *pin_name, uint8_t is_output) {
     char *chip;
     uint32_t offset;
 
@@ -62,24 +62,24 @@ int user_st7789_impl_init(void *handle) {
         goto free_and_exit;
     }
 
-    if(_user_st7789_impl_init_pin(impl->dc_gpio, "dc", 1) != 0) {
+    if(user_st7789_impl_init_pin(impl->dc_gpio, "dc", 1) != 0) {
         USER_LOG(USER_LOG_ERROR, "DC pin not found, can not continue.");
         goto deinit_spi_and_exit;
     }
 
-    if(_user_st7789_impl_init_pin(impl->cs_gpio, "cs", 1) != 0) {
+    if(user_st7789_impl_init_pin(impl->cs_gpio, "cs", 1) != 0) {
         free(impl->cs_gpio);
         impl->cs_gpio = NULL;
         USER_LOG(USER_LOG_WARN, "No CS pin found, SPI must be correctly configured.");
     }
 
-    if(_user_st7789_impl_init_pin(impl->reset_gpio, "reset", 1) != 0) {
+    if(user_st7789_impl_init_pin(impl->reset_gpio, "reset", 1) != 0) {
         free(impl->reset_gpio);
         impl->reset_gpio = NULL;
         USER_LOG(USER_LOG_WARN, "No Reset pin found.");
     }
 
-    if(_user_st7789_impl_init_pin(impl->bl_gpio, "backlight", 1) != 0) {
+    if(user_st7789_impl_init_pin(impl->bl_gpio, "backlight", 1) != 0) {
         free(impl->bl_gpio);
         impl->bl_gpio = NULL;
         USER_LOG(USER_LOG_WARN, "No backlight pin found.");

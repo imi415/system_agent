@@ -12,6 +12,7 @@ set(C_SOURCES
     "src/drivers/user_config_driver.c"
     "src/impl/user_st7789_impl.c"
     "src/impl/user_lvgl_impl.c"
+    "src/impl/user_stick_impl.c"
     "src/tasks/user_lvgl_task.c"
     "src/tasks/user_clock_task.c"
     "src/utils/user_log_util.c"

@@ -30,6 +30,28 @@ agent: {
                 line = 12;
             };
         };
+        stick: {
+            up: {
+                path = "/dev/gpiochip2";
+                line = 1;
+            };
+            down: {
+                path = "/dev/gpiochip2";
+                line = 3;
+            };
+            left: {
+                path = "/dev/gpiochip2";
+                line = 2;
+            };
+            right: {
+                path = "/dev/gpiochip2";
+                line = 4;
+            };
+            push: {
+                path = "/dev/gpiochip2";
+                line = 0;
+            };
+        };
     };
 
     libraries: {

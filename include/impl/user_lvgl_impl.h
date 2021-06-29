@@ -8,6 +8,10 @@ void user_lvgl_impl_init(void);
 void user_lvgl_impl_flush_cb(lv_disp_drv_t *disp_drv, const lv_area_t *area,
                              lv_color_t *color_p);
 
+void user_lvgl_impl_indev_read_cb(lv_indev_drv_t *drv, lv_indev_data_t *data);
+
+void user_lvgl_impl_log_cb(const char *buf);
+
 void *user_lvgl_impl_fs_open_cb(lv_fs_drv_t *drv, const char *path,
                                 lv_fs_mode_t mode);
 
