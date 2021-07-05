@@ -39,6 +39,7 @@ int main(int argc, const char *argv[]) {
     user_log_set_level(log_level);
 
     user_lvgl_task_init();
+    user_base_task_init();
     user_clock_task_init();
 
     USER_LOG(USER_LOG_INFO, "Initialized, main thread sleeping.");
@@ -47,6 +48,7 @@ int main(int argc, const char *argv[]) {
     }
 
     user_clock_task_deinit();
+    user_base_task_deinit();
     user_lvgl_task_deinit();
 
     user_config_deinit(&g_config);

@@ -102,7 +102,7 @@
  *With complex image decoders (e.g. PNG or JPG) caching can save the continuous open/decode of images.
  *However the opened images might consume additional RAM.
  *0: to disable caching*/
-#define LV_IMG_CACHE_DEF_SIZE       0
+#define LV_IMG_CACHE_DEF_SIZE       (48*1024)
 
 /*Maximum buffer size to allocate for rotation. Only used if software rotation is enabled in the display driver.*/
 #define LV_DISP_ROT_MAX_BUF         (10*1024)
@@ -297,7 +297,10 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 /*Optionally declare custom fonts here.
  *You can use these fonts as default font too and they will be available globally.
  *E.g. #define LV_FONT_CUSTOM_DECLARE   LV_FONT_DECLARE(my_font_1) LV_FONT_DECLARE(my_font_2)*/
-#define LV_FONT_CUSTOM_DECLARE
+#define LV_FONT_CUSTOM_DECLARE LV_FONT_DECLARE(encode_sans_sc_light_24) \
+                               LV_FONT_DECLARE(encode_sans_sc_regular_32) \
+                               LV_FONT_DECLARE(encode_sans_sc_bold_48) \
+                               LV_FONT_DECLARE(encode_sans_sc_regular_64)
 
 /*Always set a default font*/
 #define LV_FONT_DEFAULT &lv_font_montserrat_14
@@ -308,10 +311,10 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_FONT_FMT_TXT_LARGE   0
 
 /*Enables/disables support for compressed fonts.*/
-#define LV_USE_FONT_COMPRESSED  0
+#define LV_USE_FONT_COMPRESSED  1
 
 /*Enable subpixel rendering*/
-#define LV_USE_FONT_SUBPX       0
+#define LV_USE_FONT_SUBPX       1
 #if LV_USE_FONT_SUBPX
 /*Set the pixel order of the display. Physical order of RGB channels. Doesn't matter with "normal" fonts.*/
 #define LV_FONT_SUBPX_BGR       0  /*0: RGB; 1:BGR order*/

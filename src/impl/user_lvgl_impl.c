@@ -60,10 +60,10 @@ void user_lvgl_impl_indev_read_cb(lv_indev_drv_t *drv, lv_indev_data_t *data) {
         }
         switch(key_to_determine) {
         case USER_STICK_LEFT:
-            data->key = LV_KEY_LEFT;
+            data->key = LV_KEY_PREV;
             break;
         case USER_STICK_RIGHT:
-            data->key = LV_KEY_RIGHT;
+            data->key = LV_KEY_NEXT;
             break;
         case USER_STICK_UP:
             data->key = LV_KEY_UP;

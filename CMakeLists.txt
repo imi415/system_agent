@@ -3,7 +3,9 @@ cmake_minimum_required(VERSION 3.10)
 project(SystemAgent)
 
 set(ST7789_LCD_DEFINES "ST7789_PANEL_ZJY_320")
-set(LVGL_DEFINES "LV_CONF_INCLUDE_SIMPLE")
+set(LVGL_DEFINES
+    "LV_CONF_INCLUDE_SIMPLE"
+)
 
 set(C_SOURCES
     "src/main.c"
@@ -15,7 +17,12 @@ set(C_SOURCES
     "src/impl/user_stick_impl.c"
     "src/tasks/user_lvgl_task.c"
     "src/tasks/user_clock_task.c"
+    "src/tasks/user_base_task.c"
     "src/utils/user_log_util.c"
+    "src/assets/encode_sans_sc_light_24.c"
+    "src/assets/encode_sans_sc_regular_32.c"
+    "src/assets/encode_sans_sc_bold_48.c"
+    "src/assets/encode_sans_sc_regular_64.c"
 )
 
 set(C_INCLUDES
@@ -26,6 +33,7 @@ set(C_INCLUDES
 
 set(C_DEFINES
     "_GNU_SOURCE"
+    "LV_LVGL_H_INCLUDE_SIMPLE"
     ${ST7789_LCD_DEFINES}
     ${LVGL_DEFINES}
 )

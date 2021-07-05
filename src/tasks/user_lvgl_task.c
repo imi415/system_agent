@@ -1,19 +1,11 @@
-#include <stdint.h>
+#include "tasks/user_task_lvgl_common.h"
 
-#include <unistd.h>
-#include <pthread.h>
-
-#include "lvgl.h"
-
-#include "utils/user_log_util.h"
-#include "tasks/user_tasks.h"
 #include "impl/user_lvgl_impl.h"
 
-#define PIXBUF_SIZE 320 * 10
-
-extern uint8_t g_running;
+#define PIXBUF_SIZE 320 * 20
 
 uint8_t g_lvgl_ready = 0;
+pthread_mutex_t g_lvgl_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 pthread_t user_lv_task_thread;
 pthread_t user_lv_tick_thread;
@@ -34,6 +26,8 @@ int user_lvgl_task_init(void) {
 
     USER_LOG(USER_LOG_INFO, "lv_init() called.");
 
+    pthread_mutex_lock(&g_lvgl_mutex);
+
     lv_init();
 
     lv_log_register_print_cb(user_lvgl_impl_log_cb);
@@ -53,6 +47,8 @@ int user_lvgl_task_init(void) {
     lv_indev_t *indev = lv_indev_drv_register(&s_indev_drv);
 
     lv_group_t *indev_group = lv_group_create();
+    lv_group_set_default(indev_group);
+    lv_indev_set_group(indev, indev_group);
 
     lv_fs_drv_init(&s_fs_drv);
     s_fs_drv.letter = 'A';
@@ -64,6 +60,8 @@ int user_lvgl_task_init(void) {
     s_fs_drv.tell_cb = user_lvgl_impl_fs_tell_cb;
 
     lv_fs_drv_register(&s_fs_drv);
+
+    pthread_mutex_unlock(&g_lvgl_mutex);
 
     ret = pthread_create(&user_lv_task_thread, NULL, user_lv_task, NULL);
     if(ret) return ret;
@@ -94,7 +92,9 @@ void *user_lv_task(void *arguments) {
 
     while(g_running) {
         usleep(30 * 1000);
+        pthread_mutex_lock(&g_lvgl_mutex);
         lv_timer_handler();
+        pthread_mutex_unlock(&g_lvgl_mutex);
     }
 
     return NULL;
@@ -103,7 +103,9 @@ void *user_lv_task(void *arguments) {
 void *user_lv_tick(void *arguments) {
     while(g_running) {
         usleep(30 * 1000);
+        pthread_mutex_lock(&g_lvgl_mutex);
         lv_tick_inc(30);
+        pthread_mutex_unlock(&g_lvgl_mutex);
     }
 
     return NULL;
