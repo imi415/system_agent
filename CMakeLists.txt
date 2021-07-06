@@ -15,8 +15,10 @@ set(C_SOURCES
     "src/impl/user_st7789_impl.c"
     "src/impl/user_lvgl_impl.c"
     "src/impl/user_stick_impl.c"
+    "src/impl/user_bme280_impl.c"
     "src/tasks/user_lvgl_task.c"
     "src/tasks/user_clock_task.c"
+    "src/tasks/user_dht_task.c"
     "src/tasks/user_base_task.c"
     "src/utils/user_log_util.c"
     "src/assets/encode_sans_sc_light_24.c"
@@ -28,6 +30,7 @@ set(C_SOURCES
 set(C_INCLUDES
     "lib/LittleVGL"
     "lib/st7789_lcd"
+    "lib/bme280_dht"
     "include"
 )
 
@@ -46,6 +49,7 @@ set(C_LIBRARIES
     "config"
     "lvgl"
     "st7789"
+    "bme280"
 )
 
 add_subdirectory(lib)

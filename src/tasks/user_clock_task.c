@@ -78,4 +78,6 @@ void *user_clock_task(void *arguments) {
         pthread_mutex_unlock(&g_lvgl_mutex);
         usleep(200 * 1000);
     }
+
+    return NULL;
 }

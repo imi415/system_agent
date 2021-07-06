@@ -5,13 +5,14 @@ agent: {
         log_level = 1;
     };
 
-    drivers: {
-        i2c: {
-            path = "/dev/i2c-1";
-        };
-    };
-
     devices: {
+        dht: {
+            i2c: {
+                path = "/dev/i2c-1";
+                addr = 0x76;
+            };
+        };
+
         lcd: {
             spi: {
                 path = "/dev/spidev0.1";
@@ -30,6 +31,7 @@ agent: {
                 line = 68;
             };
         };
+
         stick: {
             up: {
                 path = "/dev/gpiochip2";

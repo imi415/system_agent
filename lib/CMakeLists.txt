@@ -18,3 +18,10 @@ set(ST7789_LCD_SOURCES
 
 add_library(st7789 STATIC ${ST7789_LCD_SOURCES})
 target_compile_definitions(st7789 PRIVATE ${ST7789_LCD_DEFINES})
+
+set(BME280_DHT_SOURCES
+    "bme280_dht/bme280_dht.c"
+)
+
+add_library(bme280 STATIC ${BME280_DHT_SOURCES})
+target_compile_definitions(bme280 PRIVATE ${BME280_DHT_DEFINES})

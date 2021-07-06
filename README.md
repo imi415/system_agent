@@ -6,7 +6,7 @@ which runs on Linux.
 
 ## Supported sensors
 
-- [ ] Bosch SensorTec BME280 digital temperature/humidity/pressure sensor
+- [x] Bosch SensorTec BME280 digital temperature/humidity/pressure sensor
 - [ ] AMS(Sciosense) CCS811 eTVOC sensor
 - [ ] MH-Z19 series NDIR eCO2 sensor 
 - [ ] TDK InvenSense 6-Axis gyro/accelerometer

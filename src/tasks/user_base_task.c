@@ -62,4 +62,6 @@ void *user_base_task(void *arguments) {
     while(g_running) {
         sleep(1);
     }
+
+    return NULL;
 }
