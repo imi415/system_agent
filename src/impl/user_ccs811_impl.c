@@ -104,6 +104,8 @@ ccs811_ret_t user_ccs811_impl_read_register_cb(user_ccs811_impl_t *impl,
 
 ccs811_ret_t user_ccs811_impl_write_register_cb(user_ccs811_impl_t *impl,
                                                 uint8_t reg, uint8_t *data, uint8_t len) {
+
+    ccs811_ret_t ret = CCS_OK;
     uint8_t *tx_buf = malloc(len + 1);
     if(tx_buf == NULL) {
         USER_LOG(USER_LOG_WARN, "Failed to alloc %d bytes, reg=%d", len, reg);
@@ -115,8 +117,10 @@ ccs811_ret_t user_ccs811_impl_write_register_cb(user_ccs811_impl_t *impl,
 
     if(write(impl->i2cdev_fd, tx_buf, len + 1) < len + 1) {
         USER_LOG(USER_LOG_WARN, "I2C write failed, reg=%d.", reg);
-        return CCS_FAIL;
+        ret = CCS_FAIL;
     }
 
-    return CCS_OK;
+    free(tx_buf);
+
+    return ret;
 }
