@@ -11,6 +11,18 @@ agent: {
                 path = "/dev/i2c-1";
                 addr = 0x76;
             };
+
+        tvoc: {
+            i2c: {
+                path = "/dev/i2c-1";
+                addr = 0x58;
+            };
+            nwake_pin: {
+                path = "/dev/i2c-1";
+                line = 5;
+            };
+        };
+
         };
 
         lcd: {

@@ -16,6 +16,7 @@ set(C_SOURCES
     "src/impl/user_lvgl_impl.c"
     "src/impl/user_stick_impl.c"
     "src/impl/user_bme280_impl.c"
+    "src/impl/user_ccs811_impl.c"
     "src/tasks/user_lvgl_task.c"
     "src/tasks/user_clock_task.c"
     "src/tasks/user_dht_task.c"
@@ -31,6 +32,7 @@ set(C_INCLUDES
     "lib/LittleVGL"
     "lib/st7789_lcd"
     "lib/bme280_dht"
+    "lib/ccs811_tvoc"
     "include"
 )
 
