@@ -23,8 +23,6 @@ agent: {
             };
         };
 
-        };
-
         lcd: {
             spi: {
                 path = "/dev/spidev0.1";

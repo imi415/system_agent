@@ -12,6 +12,8 @@ int user_dht_task_init(void) {
 
     ret = pthread_create(&user_dht_task_thread, NULL, user_dht_task, NULL);
     if(ret) return ret;
+
+    pthread_setname_np(user_dht_task_thread, "DHT");
 }
 
 int user_dht_task_deinit(void) {

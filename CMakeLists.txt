@@ -20,6 +20,7 @@ set(C_SOURCES
     "src/tasks/user_lvgl_task.c"
     "src/tasks/user_clock_task.c"
     "src/tasks/user_dht_task.c"
+    "src/tasks/user_tvoc_task.c"
     "src/tasks/user_base_task.c"
     "src/utils/user_log_util.c"
     "src/assets/encode_sans_sc_light_24.c"
