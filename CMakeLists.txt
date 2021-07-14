@@ -50,6 +50,7 @@ set(C_LIBRARIES
     "lvgl"
     "st7789"
     "bme280"
+    "ccs811"
 )
 
 add_subdirectory(lib)

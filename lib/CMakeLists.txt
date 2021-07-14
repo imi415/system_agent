@@ -25,3 +25,11 @@ set(BME280_DHT_SOURCES
 
 add_library(bme280 STATIC ${BME280_DHT_SOURCES})
 target_compile_definitions(bme280 PRIVATE ${BME280_DHT_DEFINES})
+
+set(CCS811_TVOC_SOURCES
+    "ccs811_tvoc/ccs811_tvoc.c"
+)
+
+add_library(ccs811 STATIC ${CCS811_TVOC_SOURCES})
+target_compile_definitions(ccs811 PRIVATE ${CCS811_TVOC_DEFINES})
+
