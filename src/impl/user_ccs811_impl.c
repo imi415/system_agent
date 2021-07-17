@@ -75,6 +75,7 @@ int user_ccs811_impl_init(user_ccs811_impl_t *impl) {
 int user_ccs811_impl_deinit(user_ccs811_impl_t *impl) {
     close(impl->i2cdev_fd);
     if(impl->nwake_pin != NULL) {
+        user_gpio_set(impl->nwake_pin, 1);
         user_gpio_deinit(impl->nwake_pin);
         free(impl->nwake_pin);
     }
