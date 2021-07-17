@@ -5,7 +5,7 @@ ccs811_ret_t _ccs811_app_start(ccs811_t *ccs);
 ccs811_ret_t _ccs811_set_mode(ccs811_t *ccs, uint8_t mode);
 
 
-ccs811_ret_t ccs811_init(ccs811_t *ccs, uint8_t addr, void *arg) {
+ccs811_ret_t ccs811_init(ccs811_t *ccs) {
     if(_ccs811_sw_reset(ccs) == CCS_FAIL) return CCS_FAIL;
     ccs->cb.delay_ms_cb(ccs->user_data, 5);
     if(_ccs811_app_start(ccs) == CCS_FAIL) return CCS_FAIL;

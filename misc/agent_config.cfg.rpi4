@@ -15,11 +15,11 @@ agent: {
         tvoc: {
             i2c: {
                 path = "/dev/i2c-1";
-                addr = 0x58;
+                addr = 0x5a;
             };
             nwake_pin: {
-                path = "/dev/i2c-1";
-                line = 5;
+                path = "/dev/gpiochip0";
+                line = 6;
             };
         };
 

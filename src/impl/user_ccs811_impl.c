@@ -99,6 +99,11 @@ ccs811_ret_t user_ccs811_impl_read_register_cb(user_ccs811_impl_t *impl,
         return CCS_FAIL;
     }
 
+    USER_LOG(USER_LOG_DEBUG, "I2C register read: reg=%d, len=%d", reg, len);
+    for(uint8_t i = 0; i < len; i++) {
+        USER_LOG(USER_LOG_DEBUG, "I2C register read: reg=%d, data=0x%02x", reg, data[i]);
+    }
+
     return CCS_OK;
 }
 
@@ -119,6 +124,8 @@ ccs811_ret_t user_ccs811_impl_write_register_cb(user_ccs811_impl_t *impl,
         USER_LOG(USER_LOG_WARN, "I2C write failed, reg=%d.", reg);
         ret = CCS_FAIL;
     }
+
+    USER_LOG(USER_LOG_DEBUG, "I2C register write: reg=%d", reg);
 
     free(tx_buf);
 

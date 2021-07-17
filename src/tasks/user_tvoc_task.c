@@ -23,11 +23,34 @@ int user_tvoc_task_deinit(void) {
 }
 
 void *user_tvoc_task(void *arguments) {
+
+    user_ccs811_impl_t impl;
+
+    user_ccs811_impl_init(&impl);
+
+    ccs811_t ccs = {
+        .cb =
+            {
+                .write_register_cb = (ccs811_ret_t (*)(void *, uint8_t,  uint8_t *, uint8_t))user_ccs811_impl_write_register_cb,
+                .read_register_cb = (ccs811_ret_t(*)(void *, uint8_t,  uint8_t *, uint8_t))user_ccs811_impl_read_register_cb,
+                .delay_ms_cb = (ccs811_ret_t (*)(void *, uint32_t))user_ccs811_impl_delay_ms_cb,
+            },
+        .user_data = &impl,
+    };
+
+    ccs811_init(&ccs);
+    ccs811_set_env_data(&ccs, 26.000, 40.000);
+
     while(g_running && !g_lvgl_ready) {
         sleep(1);
     }
 
     while(g_running) {
+        ccs811_result_t result;
+        ccs811_measure(&ccs, &result);
+        USER_LOG(USER_LOG_INFO, "CCS: %d, %d", result.eco2, result.tvoc);
         sleep(1);
     }
+
+    user_ccs811_impl_deinit(&impl);
 }

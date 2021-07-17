@@ -45,6 +45,7 @@ void user_log_print(user_log_level_t level, char *fmt, ...) {
     fprintf(stderr, "[% 9d]%s ", time(NULL), level_str);
     vfprintf(stderr, fmt, args);
     fprintf(stderr, "\n");
+    fflush(stderr);
     
     va_end(args);
 }
