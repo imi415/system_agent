@@ -13,6 +13,9 @@ int user_dht_task_deinit(void);
 int user_base_task_init(void);
 int user_base_task_deinit(void);
 
+int user_mqtt_task_init(void);
+int user_mqtt_task_deinit(void);
+
 int user_tvoc_task_init(void);
 int user_tvoc_task_deinit(void);
 

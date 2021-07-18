@@ -33,3 +33,9 @@ set(CCS811_TVOC_SOURCES
 add_library(ccs811 STATIC ${CCS811_TVOC_SOURCES})
 target_compile_definitions(ccs811 PRIVATE ${CCS811_TVOC_DEFINES})
 
+set(MQTT_INFLUX_SOURCES
+    "mqtt_influx/mqtt_influx.c"
+)
+
+add_library(mqtt_influx STATIC ${MQTT_INFLUX_SOURCES})
+target_compile_definitions(mqtt_influx PRIVATE ${MQTT_INFLUX_DEFINES})

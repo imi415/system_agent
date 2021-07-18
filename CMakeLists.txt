@@ -17,11 +17,13 @@ set(C_SOURCES
     "src/impl/user_stick_impl.c"
     "src/impl/user_bme280_impl.c"
     "src/impl/user_ccs811_impl.c"
+    "src/impl/user_mqtt_impl.c"
     "src/tasks/user_lvgl_task.c"
     "src/tasks/user_clock_task.c"
     "src/tasks/user_dht_task.c"
     "src/tasks/user_tvoc_task.c"
     "src/tasks/user_base_task.c"
+    "src/tasks/user_mqtt_task.c"
     "src/utils/user_log_util.c"
     "src/assets/encode_sans_sc_light_24.c"
     "src/assets/encode_sans_sc_regular_32.c"
@@ -34,6 +36,7 @@ set(C_INCLUDES
     "lib/st7789_lcd"
     "lib/bme280_dht"
     "lib/ccs811_tvoc"
+    "lib/mqtt_influx"
     "include"
 )
 
@@ -54,6 +57,7 @@ set(C_LIBRARIES
     "st7789"
     "bme280"
     "ccs811"
+    "mqtt_influx"
 )
 
 add_subdirectory(lib)

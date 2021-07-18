@@ -15,6 +15,7 @@ uint8_t g_running = 1;
 
 user_config_t g_config;
 
+
 static void signal_handler(int signo) {
     if(signo == SIGINT || signo == SIGTERM) {
         g_running = 0;
@@ -42,6 +43,7 @@ int main(int argc, const char *argv[]) {
     user_config_lookup_int(&g_config, "agent.common.log_level", (int *)&log_level);
     user_log_set_level(log_level);
 
+    user_mqtt_task_init();
     user_lvgl_task_init();
     user_base_task_init();
     user_clock_task_init();
@@ -58,6 +60,7 @@ int main(int argc, const char *argv[]) {
     user_clock_task_deinit();
     user_base_task_deinit();
     user_lvgl_task_deinit();
+    user_mqtt_task_deinit();
 
     user_config_deinit(&g_config);
 
