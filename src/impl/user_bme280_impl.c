@@ -45,6 +45,7 @@ int user_bme280_impl_init(user_bme280_impl_t *impl) {
 
 int user_bme280_impl_deinit(user_bme280_impl_t *impl) {
     close(impl->i2cdev_fd);
+    return 0;
 }
 
 bme280_ret_t user_bme280_impl_read_register_cb(user_bme280_impl_t *impl,
@@ -60,15 +61,24 @@ bme280_ret_t user_bme280_impl_read_register_cb(user_bme280_impl_t *impl,
         return BME_FAIL;
     }
 
+    for(uint8_t i = 0; i < len; i++) {
+        USER_LOG(USER_LOG_DEBUG, "I2C read, reg=%x, value=%x.", reg, data[i]);
+    }
     return BME_OK;
 }
 
 bme280_ret_t user_bme280_impl_write_register_cb(user_bme280_impl_t *impl,
                                                 uint8_t reg, uint8_t data) {
     uint8_t tx_buf[2] = {reg, data};
+    USER_LOG(USER_LOG_DEBUG, "I2C write, reg=%d, value=%d.", reg, data);
     if(write(impl->i2cdev_fd, tx_buf, 0x02) < 2) {
         USER_LOG(USER_LOG_WARN, "I2C write failed, reg=%d.", reg);
         return BME_FAIL;
     }
+    return BME_OK;
+}
+
+bme280_ret_t user_bme280_impl_delay_cb(user_bme280_impl_t *impl, uint32_t delay_ms) {
+    usleep(delay_ms * 1000);
     return BME_OK;
 }

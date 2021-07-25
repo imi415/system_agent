@@ -54,7 +54,7 @@ int user_gpio_setup_intr(user_gpio_t *gpio, user_gpio_intr_t type) {
         request_type = GPIOD_LINE_REQUEST_EVENT_RISING_EDGE;
     else if(type == USER_GPIO_INTR_FALLING)
         request_type = GPIOD_LINE_REQUEST_EVENT_FALLING_EDGE;
-    else if(type == USER_GPIO_INTR_RISING | USER_GPIO_INTR_FALLING)
+    else if(type == (USER_GPIO_INTR_RISING | USER_GPIO_INTR_FALLING))
         request_type = GPIOD_LINE_REQUEST_EVENT_BOTH_EDGES;
 
     const struct gpiod_line_request_config config = {

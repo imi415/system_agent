@@ -28,9 +28,14 @@ mqtt_influx_ret_t mqtt_influx_publish_measurement(mqtt_influx_t *influx,
 
     char mqtt_buf[MAX_MQTT_REPORT_SIZE];
     char ns_ts[32];
+
     if(influx->cb.get_nsec_timestamp_cb(influx->user_data, ns_ts) !=
        MQTT_INFLUX_OK) {
         return MQTT_INFLUX_ERROR;
+    }
+
+    for(int i = 0; i < MAX_MQTT_REPORT_SIZE; i++) {
+        mqtt_buf[i] = '\0';
     }
 
     concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, meas->measurement);
@@ -40,6 +45,7 @@ mqtt_influx_ret_t mqtt_influx_publish_measurement(mqtt_influx_t *influx,
     concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, meas->key);
     concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, "=");
     concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, meas->value);
+    concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, " ");
     concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, ns_ts);
 
     if(influx->cb.publish_message_cb(influx->user_data, mqtt_buf) != MQTT_INFLUX_OK) {

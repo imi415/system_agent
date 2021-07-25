@@ -141,7 +141,7 @@ lv_fs_res_t user_lvgl_impl_fs_read_cb(lv_fs_drv_t *drv, void *file_p, void *buf,
         USER_LOG(USER_LOG_DEBUG, "Called read() on fd %d, len=%d, rlen=%d", fd,
                  btr, *br);
 
-        if(*br < 0) return LV_FS_RES_FS_ERR;
+        if((int)*br < 0) return LV_FS_RES_FS_ERR;
         return LV_FS_RES_OK;
     }
 
@@ -155,7 +155,7 @@ lv_fs_res_t user_lvgl_impl_fs_write_cb(lv_fs_drv_t *drv, void *file_p,
 
     if(fd > 0) {
         *bw = write(fd, buf, btw);
-        if(*bw < 0) return LV_FS_RES_FS_ERR;
+        if((int)*bw < 0) return LV_FS_RES_FS_ERR;
         return LV_FS_RES_OK;
     }
 
@@ -201,7 +201,7 @@ lv_fs_res_t user_lvgl_impl_fs_tell_cb(lv_fs_drv_t *drv, void *file_p,
 
         USER_LOG(USER_LOG_DEBUG, "Called tell() on fd %d, pos=%d", fd, *pos_p);
 
-        if(*pos_p < 0) return LV_FS_RES_FS_ERR;
+        if((int)*pos_p < 0) return LV_FS_RES_FS_ERR;
         return LV_FS_RES_OK;
     }
 

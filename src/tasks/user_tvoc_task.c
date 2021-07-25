@@ -14,6 +14,8 @@ int user_tvoc_task_init(void) {
     if(ret) return ret;
 
     pthread_setname_np(user_tvoc_task_thread, "TVOC");
+
+    return 0;
 }
 
 int user_tvoc_task_deinit(void) {
@@ -53,4 +55,6 @@ void *user_tvoc_task(void *arguments) {
     }
 
     user_ccs811_impl_deinit(&impl);
+
+    return NULL;
 }

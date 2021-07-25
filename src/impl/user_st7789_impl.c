@@ -21,7 +21,7 @@ static int user_st7789_impl_init_pin(user_gpio_t *gpio, char *pin_name, uint8_t 
 
     snprintf(name_buffer, 64, "agent.devices.lcd.%s_pin.line", pin_name);
 
-    if(user_config_lookup_int(&g_config, name_buffer, &offset) != 0) return -2;
+    if(user_config_lookup_int(&g_config, name_buffer, (int *)&offset) != 0) return -2;
 
     if(user_gpio_init(gpio, chip, offset, is_output) != 0) return -3;
 

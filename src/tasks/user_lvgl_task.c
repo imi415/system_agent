@@ -74,6 +74,8 @@ int user_lvgl_task_init(void) {
     pthread_setname_np(user_lv_tick_thread, "LV_TICK");
 
     g_lvgl_ready = 1;
+
+    return 0;
 }
 
 int user_lvgl_task_deinit(void) {

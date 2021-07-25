@@ -8,18 +8,19 @@ agent: {
     devices: {
         dht: {
             i2c: {
-                path = "/dev/i2c-1";
+                path = "/dev/i2c-0";
                 addr = 0x76;
             };
+        };
 
         tvoc: {
             i2c: {
-                path = "/dev/i2c-1";
+                path = "/dev/i2c-0";
                 addr = 0x5a;
             };
             nwake_pin: {
                 path = "/dev/gpiochip1";
-                line = 5;
+                line = 230;
             };
         };
 
@@ -73,6 +74,6 @@ agent: {
     };
 
     theme: {
-        background = "A:images/background.bin"
+        background = "A:images/background.bin";
     };
 };

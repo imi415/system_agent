@@ -35,27 +35,28 @@ typedef enum {
 typedef struct {
     bme280_ret_t (*read_register_cb)(void *handle, uint8_t reg, uint8_t *data, uint8_t len);
     bme280_ret_t (*write_register_cb)(void *handle, uint8_t reg, uint8_t data);
+    bme280_ret_t (*delay_cb)(void *handle, uint32_t delay_ms);
 } bme280_cb_t;
 
 typedef struct {
-    unsigned short dig_T1;
-    short dig_T2;
-    short dig_T3;
-    unsigned short dig_P1;
-    short dig_P2;
-    short dig_P3;
-    short dig_P4;
-    short dig_P5;
-    short dig_P6;
-    short dig_P7;
-    short dig_P8;
-    short dig_P9;
-    unsigned char dig_H1;
-    short dig_H2;
-    unsigned char dig_H3;
-    short dig_H4;
-    short dig_H5;
-    char dig_H6;
+    uint16_t dig_T1;
+    int16_t dig_T2;
+    int16_t dig_T3;
+    uint16_t dig_P1;
+    int16_t dig_P2;
+    int16_t dig_P3;
+    int16_t dig_P4;
+    int16_t dig_P5;
+    int16_t dig_P6;
+    int16_t dig_P7;
+    int16_t dig_P8;
+    int16_t dig_P9;
+    uint8_t dig_H1;
+    int16_t dig_H2;
+    uint8_t dig_H3;
+    int16_t dig_H4;
+    int16_t dig_H5;
+    int8_t dig_H6;
 } bme280_trim_t;
 
 typedef struct {

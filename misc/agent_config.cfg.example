@@ -74,6 +74,6 @@ agent: {
     };
 
     theme: {
-        background = "A:background.bin"
+        background = "A:background.bin";
     };
 };

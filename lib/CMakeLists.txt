@@ -25,6 +25,7 @@ set(BME280_DHT_SOURCES
 
 add_library(bme280 STATIC ${BME280_DHT_SOURCES})
 target_compile_definitions(bme280 PRIVATE ${BME280_DHT_DEFINES})
+target_compile_options(bme280 PRIVATE "-Wall" "-Wextra" "-Wno-unused")
 
 set(CCS811_TVOC_SOURCES
     "ccs811_tvoc/ccs811_tvoc.c"

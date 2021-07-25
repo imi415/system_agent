@@ -1,8 +1,7 @@
 #include <stdlib.h>
 
-#include "utils/user_log_util.h"
-
 #include "drivers/user_config_driver.h"
+#include "utils/user_log_util.h"
 
 int user_config_init(user_config_t *config, char *config_file) {
     USER_LOG(USER_LOG_INFO, "Config init.");
@@ -13,7 +12,11 @@ int user_config_init(user_config_t *config, char *config_file) {
     config_init(config->libconfig_cfg);
 
     if(!config_read_file(config->libconfig_cfg, config_file)) {
-        USER_LOG(USER_LOG_ERROR, "Failed to read config file %s.", config_file);
+        USER_LOG(USER_LOG_ERROR,
+                 "Failed to read config file %s: %s in file %s at line %d.",
+                 config_file, config_error_text(config->libconfig_cfg),
+                 config_error_file(config->libconfig_cfg),
+                 config_error_line(config->libconfig_cfg));
         return -2;
     }
 
@@ -37,7 +40,8 @@ int user_config_lookup_int(user_config_t *config, char *path, int *value) {
     return 0;
 }
 
-int user_config_lookup_double(user_config_t *config, char *path, double *value) {
+int user_config_lookup_double(user_config_t *config, char *path,
+                              double *value) {
     if(config_lookup_float(config->libconfig_cfg, path, value) == 0) {
         return -1;
     }

@@ -17,6 +17,8 @@ int user_clock_task_init(void) {
     pthread_setname_np(user_clock_task_thread, "CLOCK");
 
     USER_LOG(USER_LOG_INFO, "CLOCK thread created.");
+
+    return 0;
 }
 
 int user_clock_task_deinit(void) {

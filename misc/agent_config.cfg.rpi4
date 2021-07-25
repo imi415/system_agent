@@ -11,6 +11,7 @@ agent: {
                 path = "/dev/i2c-1";
                 addr = 0x76;
             };
+        };
 
         tvoc: {
             i2c: {
@@ -73,6 +74,6 @@ agent: {
     };
 
     theme: {
-        background = "A:images/background.bin"
+        background = "A:images/background.bin";
     };
 };

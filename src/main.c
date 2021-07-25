@@ -15,7 +15,6 @@ uint8_t g_running = 1;
 
 user_config_t g_config;
 
-
 static void signal_handler(int signo) {
     if(signo == SIGINT || signo == SIGTERM) {
         g_running = 0;

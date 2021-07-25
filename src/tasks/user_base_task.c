@@ -13,6 +13,8 @@ int user_base_task_init(void) {
     pthread_setname_np(user_base_task_thread, "BASE");
 
     USER_LOG(USER_LOG_INFO, "BASE thread created.");
+
+    return 0;
 }
 
 int user_base_task_deinit(void) {
