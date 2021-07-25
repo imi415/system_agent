@@ -9,9 +9,9 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
     - name: "Update package cache"
-      run: "apt-get update"
+      run: "sudo apt-get update"
     - name: "Setup dependencies"
-      run: "apt-get -y install build-essential cmake libmosquitto-dev libconfig-dev libgpiod-dev libiio-dev"
+      run: "sudo apt-get -y install build-essential cmake libmosquitto-dev libconfig-dev libgpiod-dev libiio-dev"
       env:
         DEBIAN_FRONTEND: "noninteractive"
     - name: "Checkout repository"
