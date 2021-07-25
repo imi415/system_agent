@@ -16,6 +16,8 @@ jobs:
         DEBIAN_FRONTEND: "noninteractive"
     - name: "Checkout repository"
       uses: "actions/checkout@v2"
+      with:
+        submodules: "true"
     - name: "Create build directory"
       run: "mkdir build"
     - name: "Configure cmake"
