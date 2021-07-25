@@ -1,0 +1,26 @@
+
+name: "Build on native architecture"
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  build:
+    runs-on: "ubuntu-latest"
+    steps:
+    - name: "Update package cache"
+      run: "apt-get update"
+    - name: "Setup dependencies"
+      run: "apt-get -y install build-essential cmake libmosquitto-dev libconfig-dev libgpiod-dev libiio-dev"
+      env:
+        DEBIAN_FRONTEND: "noninteractive"
+    - name: "Checkout repository"
+      uses: "actions/checkout@v2"
+    - name: "Create build directory"
+      run: "mkdir build"
+    - name: "Configure cmake"
+      run: "cmake .."
+      working-directory: "build"
+    - name: "Build project"
+      run: "make"
+      working-directory: "build"
