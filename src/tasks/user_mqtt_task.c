@@ -41,6 +41,7 @@ int user_mqtt_task_deinit(void) {
 }
 
 void *user_mqtt_task(void *arguments) {
+    user_mqtt_impl_init(&s_mqtt_impl);
     mqtt_influx_init(&g_mqtt_influx);
 
     while(g_running) {

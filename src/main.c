@@ -19,6 +19,7 @@ static void signal_handler(int signo) {
     if(signo == SIGINT || signo == SIGTERM) {
         g_running = 0;
     }
+    fprintf(stderr, "\n");
     USER_LOG(USER_LOG_INFO, "Signal [%s] captured, stopping.", strsignal(signo));
 }
 

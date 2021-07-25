@@ -61,8 +61,6 @@ void *user_dht_task(void *arguments) {
 
     while(g_running) {
         bme280_measure(&bme, &res);
-        USER_LOG(USER_LOG_INFO, "BME: %.02f, %.02f, %.02f", res.temperature,
-                 res.humidity, res.pressure);
         meas.key = "temperature";
         snprintf(value_buf, 32, "%.02f", res.temperature);
         meas.value = value_buf;
