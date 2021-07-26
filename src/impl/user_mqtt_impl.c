@@ -6,12 +6,17 @@
 
 #include "utils/user_log_util.h"
 
+// TODO: Add callbacks here as static functions.
+
 int user_mqtt_impl_init(user_mqtt_impl_t *handle) {
     int mosq_major, mosq_minor, mosq_revision;
     mosquitto_lib_init();
 
     mosquitto_lib_version(&mosq_major, &mosq_minor, &mosq_revision);
-    USER_LOG(USER_LOG_INFO, "libmosquitto version %d.%d rev. %d.", mosq_major, mosq_minor, mosq_revision);
+    USER_LOG(USER_LOG_INFO, "libmosquitto library version %d.%d rev. %d.", mosq_major, mosq_minor, mosq_revision);
+
+    // Init mosquitto instance.
+    //handle->mosq = mosquitto_new();
 
     return 0;
 }
@@ -20,6 +25,10 @@ int user_mqtt_impl_deinit(user_mqtt_impl_t *handle) {
     mosquitto_lib_cleanup();
 
     return 0;
+}
+
+int user_mqtt_network_loop(user_mqtt_impl_t *handle) {
+    return mosquitto_loop(handle->mosq, 1000, 1);
 }
 
 mqtt_influx_ret_t user_mqtt_get_nsec_timestamp_cb(user_mqtt_impl_t *handle, char *timestamp_string) {

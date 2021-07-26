@@ -25,6 +25,7 @@ set(C_SOURCES
     "src/tasks/user_base_task.c"
     "src/tasks/user_mqtt_task.c"
     "src/utils/user_log_util.c"
+    "src/utils/user_system_util.c"
     "src/assets/encode_sans_sc_light_24.c"
     "src/assets/encode_sans_sc_regular_32.c"
     "src/assets/encode_sans_sc_bold_48.c"

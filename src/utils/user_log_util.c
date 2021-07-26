@@ -17,7 +17,7 @@ void user_log_set_level(user_log_level_t level) {
 
 void user_log_print(user_log_level_t level, char *fmt, ...) {
 
-    if(level < s_current_level) return;
+    if(level > s_current_level) return;
 
     while(s_lock) {
         usleep(1000);

@@ -7,7 +7,7 @@
 #include "mqtt_influx.h"
 
 typedef struct {
-    struct mosquito *mosq;
+    struct mosquitto *mosq;
 } user_mqtt_impl_t;
 
 int user_mqtt_impl_init(user_mqtt_impl_t *handle);

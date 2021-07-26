@@ -69,7 +69,21 @@ agent: {
 
     libraries: {
         lvgl: {
-            fs_base = "";
+            fs_base = ""; # This will be used as LVGL base file system and will be mounted at drive A:
+        };
+        mqtt: {
+            client: {
+                id_prefix = "";
+                server_host = "127.0.0.1";
+                server_port = 1883;
+            };
+            tls: {
+                enabled = false;
+                psk = "";
+                ca_file = "";
+                client_cert_file = "";
+                client_key_file = "";
+            };
         };
     };
 

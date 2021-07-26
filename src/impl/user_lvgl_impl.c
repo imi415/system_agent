@@ -84,7 +84,7 @@ void user_lvgl_impl_indev_read_cb(lv_indev_drv_t *drv, lv_indev_data_t *data) {
 }
 
 void user_lvgl_impl_log_cb(const char *buf) {
-    USER_LOG(USER_LOG_DEBUG, "LVGL: %s", buf);
+    USER_LOG(USER_LOG_INFO, "LVGL: %s", buf);
 }
 
 void *user_lvgl_impl_fs_open_cb(lv_fs_drv_t *drv, const char *path,

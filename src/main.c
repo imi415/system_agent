@@ -9,6 +9,7 @@
 #include "drivers/user_config_driver.h"
 #include "drivers/user_spi_driver.h"
 #include "utils/user_log_util.h"
+#include "utils/user_system_util.h"
 #include "tasks/user_tasks.h"
 
 uint8_t g_running = 1;
@@ -42,6 +43,10 @@ int main(int argc, const char *argv[]) {
     user_log_level_t log_level = USER_LOG_INFO;
     user_config_lookup_int(&g_config, "agent.common.log_level", (int *)&log_level);
     user_log_set_level(log_level);
+
+    char system_uuid[33] = { 0x00 };
+    user_system_get_systemd_unique_id(system_uuid);
+    USER_LOG(USER_LOG_INFO, "System UUID: %s", system_uuid);
 
     user_mqtt_task_init();
     user_lvgl_task_init();
