@@ -32,17 +32,12 @@ jobs:
       working-directory: "build"
 
     - name: "Run CodeChecker"
-      run: "codechecker analyze compile_commands.json -o results"
+      run: "codechecker analyze compile_commands.json -o results --ignore ../.codechecker-skip.txt"
       working-directory: "build"
 
     - name: "Generate HTML reports"
       run: "codechecker parse -e html ./results -o ./report"
       working-directory: "build"
-
-    - name: "Dump report to stderr"
-      run: "codechecker parse --print-steps ./results"
-      working-directory: "build"
-      continue-on-error: true
 
     - name: "Save HTML reports to artifact"
       uses: "actions/upload-artifact@v2"
@@ -50,4 +45,8 @@ jobs:
         name: "static-check-report"
         path: "build/report"
         retion-days: 30
+
+    - name: "Dump report to stderr"
+      run: "codechecker parse --print-steps ./results"
+      working-directory: "build"
 
