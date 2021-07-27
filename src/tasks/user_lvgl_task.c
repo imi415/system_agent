@@ -40,6 +40,7 @@ int user_lvgl_task_init(void) {
     s_disp_drv.ver_res = 240;
     s_disp_drv.flush_cb = user_lvgl_impl_flush_cb;
     lv_disp_t *disp = lv_disp_drv_register(&s_disp_drv);
+    if(disp == NULL) return -2;
 
     lv_indev_drv_init(&s_indev_drv);
     s_indev_drv.type = LV_INDEV_TYPE_KEYPAD;

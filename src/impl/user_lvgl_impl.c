@@ -33,11 +33,31 @@ st7789_lcd_t g_lcd = {
 };
 
 static user_stick_key_t s_previous_key = USER_STICK_NONE;
+static bool s_lv_log_enabled = false;
 
-void user_lvgl_impl_init(void) {
-    user_st7789_impl_init(&g_lcd_impl);
-    user_stick_impl_init(&g_stick_impl);
-    st7789_lcd_init(&g_lcd);
+int user_lvgl_impl_init(void) {
+    if(user_st7789_impl_init(&g_lcd_impl) != 0) {
+        USER_LOG(USER_LOG_ERROR,
+                 "ST7789 support library initialization failed");
+        return -1;
+    };
+    if(user_stick_impl_init(&g_stick_impl) != 0) {
+        USER_LOG(USER_LOG_ERROR,
+                 "Control stick support library initialization failed");
+        return -1;
+    }
+    if(st7789_lcd_init(&g_lcd) != ST7789_OK) {
+        USER_LOG(USER_LOG_ERROR, "ST7789 driver initialization failed.");
+        return -1;
+    }
+
+    if(user_config_lookup_bool(&g_config, "agent.libraries.lvgl.logging_enabled",
+                               &s_lv_log_enabled) != 0) {
+        USER_LOG(USER_LOG_WARN,
+                 "LVGL log level not found, fallback to default(off).");
+    };
+
+    return 0;
 }
 
 void user_lvgl_impl_flush_cb(lv_disp_drv_t *disp_drv, const lv_area_t *area,
@@ -79,12 +99,13 @@ void user_lvgl_impl_indev_read_cb(lv_indev_drv_t *drv, lv_indev_data_t *data) {
             break;
         }
         s_previous_key = key;
-        USER_LOG(USER_LOG_INFO, "Stick event: %d, key: %d", data->state, data->key);
+        USER_LOG(USER_LOG_INFO, "Stick event: %d, key: %d", data->state,
+                 data->key);
     }
 }
 
 void user_lvgl_impl_log_cb(const char *buf) {
-    USER_LOG(USER_LOG_INFO, "LVGL: %s", buf);
+    if(s_lv_log_enabled) USER_LOG(USER_LOG_INFO, "LVGL: %s", buf);
 }
 
 void *user_lvgl_impl_fs_open_cb(lv_fs_drv_t *drv, const char *path,

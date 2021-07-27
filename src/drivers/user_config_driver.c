@@ -48,6 +48,13 @@ int user_config_lookup_double(user_config_t *config, char *path,
     return 0;
 }
 
+int user_config_lookup_bool(user_config_t *config, char *path, bool *value) {
+    if(config_lookup_bool(config->libconfig_cfg, path, (int *)value) == 0) {
+        return -1;
+    }
+    return 0;
+}
+
 int user_config_deinit(user_config_t *config) {
     config_destroy(config->libconfig_cfg);
 

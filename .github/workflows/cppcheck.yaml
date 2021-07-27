@@ -32,7 +32,7 @@ jobs:
       working-directory: "build"
 
     - name: "Run CodeChecker"
-      run: "codechecker analyze compile_commands.json -o results --ignore ../.codechecker-skip.txt"
+      run: "codechecker analyze compile_commands.json -o results -i ../.codechecker-skip.txt --ctu"
       working-directory: "build"
 
     - name: "Generate HTML reports"

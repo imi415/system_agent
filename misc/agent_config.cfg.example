@@ -70,6 +70,7 @@ agent: {
     libraries: {
         lvgl: {
             fs_base = ""; # This will be used as LVGL base file system and will be mounted at drive A:
+            logging_enabled = true;
         };
         mqtt: {
             client: {

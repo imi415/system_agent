@@ -17,9 +17,12 @@ static int concat_string(char *dest, int dest_length, char *append) {
         } else
             break;
     }
+
+    return i;
 }
 
 mqtt_influx_ret_t mqtt_influx_init(mqtt_influx_t *influx) {
+    if(influx == (void *)0) return MQTT_INFLUX_ERROR;
     return MQTT_INFLUX_OK;
 }
 

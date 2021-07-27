@@ -81,9 +81,7 @@ int user_gpio_intr_poll(user_gpio_t *gpio, uint32_t timeout_ms,
     int ret = gpiod_line_event_wait(gpio->line, &ts);
     if(ret > 0) {
         ret = gpiod_line_event_read(gpio->line, &ev);
-    }
-
-    if(ret < 0) return ret;
+    } else return ret;
 
     if(ev.event_type == GPIOD_LINE_EVENT_RISING_EDGE) {
         *event = USER_GPIO_INTR_RISING;

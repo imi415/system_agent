@@ -54,7 +54,7 @@ ccs811_ret_t _ccs811_app_start(ccs811_t *ccs) {
     if(ccs->cb.read_register_cb(ccs->user_data, 0x00, &status, 0x01) == CCS_FAIL) {
         return CCS_FAIL;
     }
-    if(status & 0x10 == 0) {
+    if((status & 0x10) == 0) {
         return CCS_FAIL;
     }
     return ccs->cb.write_register_cb(ccs->user_data, 0xF4, (uint8_t *)0x00, 0x00);

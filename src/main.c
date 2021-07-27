@@ -48,23 +48,48 @@ int main(int argc, const char *argv[]) {
     user_system_get_systemd_unique_id(system_uuid);
     USER_LOG(USER_LOG_INFO, "System UUID: %s", system_uuid);
 
-    user_mqtt_task_init();
-    user_lvgl_task_init();
-    user_base_task_init();
-    user_clock_task_init();
-    user_dht_task_init();
-    user_tvoc_task_init();
+    int rc;
+    if((rc = user_mqtt_task_init()) != 0) {
+        USER_LOG(USER_LOG_FATAL, "MQTT task initialization failed(%d).", rc);
+        goto mqtt_task_init_failed;
+    }
+    if((rc = user_lvgl_task_init()) != 0) {
+        USER_LOG(USER_LOG_FATAL, "LVGL task initialization failed(%d).", rc);
+        goto lvgl_task_init_failed;
+    }
+    if((rc = user_base_task_init()) != 0) {
+        USER_LOG(USER_LOG_FATAL, "BASE task initialization failed(%d).", rc);
+        goto base_task_init_failed;
+    }
+    if((rc = user_clock_task_init()) != 0) {
+        USER_LOG(USER_LOG_FATAL, "CLOCK task initialization failed(%d).", rc);
+        goto clock_task_init_failed;
+    }
+    if((rc = user_dht_task_init()) != 0) {
+        USER_LOG(USER_LOG_FATAL, "DHT task initialization failed(%d).", rc);
+        goto dht_task_init_failed;
+    }
+    if((rc = user_tvoc_task_init()) != 0) {
+        USER_LOG(USER_LOG_FATAL, "TVOC task initialization failed(%d).", rc);
+        goto tvoc_task_init_failed;
+    }
 
-    USER_LOG(USER_LOG_INFO, "Initialized, main thread sleeping.");
+    USER_LOG(USER_LOG_INFO, "Initialized, main thread now going to sleep.");
     while(g_running) {
         sleep(1);
     }
 
+tvoc_task_init_failed:
     user_tvoc_task_deinit();
+dht_task_init_failed:
     user_dht_task_deinit();
+clock_task_init_failed:
     user_clock_task_deinit();
+base_task_init_failed:
     user_base_task_deinit();
+lvgl_task_init_failed:
     user_lvgl_task_deinit();
+mqtt_task_init_failed:
     user_mqtt_task_deinit();
 
     user_config_deinit(&g_config);
