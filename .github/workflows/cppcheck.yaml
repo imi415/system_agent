@@ -1,0 +1,28 @@
+
+name: "Run Cppcheck on repository"
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  build:
+    runs-on: "ubuntu-latest"
+    steps:
+    - name: "Update package cache"
+      run: "sudo apt-get update"
+    - name: "Setup dependencies"
+      run: "sudo apt-get -y install build-essential cmake cppcheck"
+      env:
+        DEBIAN_FRONTEND: "noninteractive"
+    - name: "Checkout repository"
+      uses: "actions/checkout@v2"
+      with:
+        submodules: "true"
+    - name: "Create build directory"
+      run: "mkdir build"
+    - name: "Configure cmake"
+      run: "cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=yes .."
+      working-directory: "build"
+    - name: "Run Cppcheck"
+      run: "cppcheck --project=compile_commands.json"
+      working-directory: "build"
