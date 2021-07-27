@@ -42,6 +42,7 @@ jobs:
     - name: "Dump report to stderr"
       run: "codechecker parse --print-steps ./results"
       working-directory: "build"
+      continue-on-error: true
 
     - name: "Save HTML reports to artifact"
       uses: "actions/upload-artifact@v2"
