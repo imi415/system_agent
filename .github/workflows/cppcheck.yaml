@@ -1,28 +1,52 @@
 
-name: "Run Cppcheck on repository"
+name: "Run static check on repository"
 on:
   push:
     branches: ["master"]
 
 jobs:
-  build:
+  static-check:
     runs-on: "ubuntu-latest"
     steps:
     - name: "Update package cache"
       run: "sudo apt-get update"
+
     - name: "Setup dependencies"
-      run: "sudo apt-get -y install build-essential cmake cppcheck"
+      run: "sudo apt-get -y install build-essential cmake libmosquitto-dev libconfig-dev libgpiod-dev libiio-dev"
       env:
         DEBIAN_FRONTEND: "noninteractive"
+
+    - name: "Install CodeChecker"
+      run: "sudo snap install codechecker --classic"
+
     - name: "Checkout repository"
       uses: "actions/checkout@v2"
       with:
         submodules: "true"
+
     - name: "Create build directory"
       run: "mkdir build"
+
     - name: "Configure cmake"
       run: "cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=yes .."
       working-directory: "build"
-    - name: "Run Cppcheck"
-      run: "cppcheck --project=compile_commands.json"
+
+    - name: "Run CodeChecker"
+      run: "codechecker analyze compile_commands.json -o results"
       working-directory: "build"
+
+    - name: "Generate HTML reports"
+      run: "codechecker parse -e html ./results -o ./report"
+      working-directory: "build"
+
+    - name: "Dump report to stderr"
+      run: "codechecker parse --print-steps ./results"
+      working-directory: "build"
+
+    - name: "Save HTML reports to artifact"
+      uses: "actions/upload-artifact@v2"
+      with:
+        name: "static-check-report"
+        path: "build/report"
+        retion-days: 30
+

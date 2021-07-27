@@ -10,19 +10,32 @@ jobs:
     steps:
     - name: "Update package cache"
       run: "sudo apt-get update"
+
     - name: "Setup dependencies"
       run: "sudo apt-get -y install build-essential cmake libmosquitto-dev libconfig-dev libgpiod-dev libiio-dev"
       env:
         DEBIAN_FRONTEND: "noninteractive"
+
     - name: "Checkout repository"
       uses: "actions/checkout@v2"
       with:
         submodules: "true"
+
     - name: "Create build directory"
       run: "mkdir build"
+
     - name: "Configure cmake"
       run: "cmake .."
       working-directory: "build"
+
     - name: "Build project"
       run: "make"
       working-directory: "build"
+
+    - name: "Store native binary"
+      uses: "actions/upload-artifact@v2"
+      with:
+        name: "sa-native-binary-ubuntu"
+        path: "build/SystemAgent"
+        retention-days: 30
+
