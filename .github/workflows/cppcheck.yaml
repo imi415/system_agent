@@ -44,7 +44,7 @@ jobs:
       with:
         name: "static-check-report"
         path: "build/report"
-        retion-days: 30
+        retention-days: 30
 
     - name: "Dump report to stderr"
       run: "codechecker parse --print-steps ./results"
