@@ -12,7 +12,7 @@ jobs:
       run: "sudo apt-get update"
 
     - name: "Setup dependencies"
-      run: "sudo apt-get -y install build-essential cmake libmosquitto-dev libconfig-dev libgpiod-dev libiio-dev"
+      run: "sudo apt-get -y install build-essential cmake clang clang-tidy libmosquitto-dev libconfig-dev libgpiod-dev libiio-dev"
       env:
         DEBIAN_FRONTEND: "noninteractive"
 
