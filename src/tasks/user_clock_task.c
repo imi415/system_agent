@@ -1,5 +1,6 @@
 #include <stdint.h>
 
+#include "user_common.h"
 #include "tasks/user_task_lvgl_common.h"
 
 pthread_t user_clock_task_thread;
@@ -32,6 +33,8 @@ int user_clock_task_deinit(void) {
 }
 
 void *user_clock_task(void *arguments) {
+    UNUSED(arguments);
+
     while(g_running && !g_lvgl_ready) {
         sleep(1);
     }

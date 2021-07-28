@@ -2,12 +2,11 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include "user_common.h"
 #include "drivers/user_config_driver.h"
-
 #include "impl/user_lvgl_impl.h"
 #include "impl/user_st7789_impl.h"
 #include "impl/user_stick_impl.h"
-
 #include "utils/user_log_util.h"
 
 extern user_config_t g_config;
@@ -68,6 +67,8 @@ void user_lvgl_impl_flush_cb(lv_disp_drv_t *disp_drv, const lv_area_t *area,
 }
 
 void user_lvgl_impl_indev_read_cb(lv_indev_drv_t *drv, lv_indev_data_t *data) {
+    UNUSED(drv);
+
     user_stick_key_t key = user_stick_impl_read(&g_stick_impl);
     user_stick_key_t key_to_determine = USER_STICK_NONE;
     if(key != s_previous_key) {                 // Key state changed
@@ -110,6 +111,8 @@ void user_lvgl_impl_log_cb(const char *buf) {
 
 void *user_lvgl_impl_fs_open_cb(lv_fs_drv_t *drv, const char *path,
                                 lv_fs_mode_t mode) {
+    UNUSED(drv);
+
     char canonical_path[256];
     char *fs_base_dir =
         user_config_lookup_string(&g_config, "agent.libraries.lvgl.fs_base");
@@ -136,6 +139,8 @@ void *user_lvgl_impl_fs_open_cb(lv_fs_drv_t *drv, const char *path,
 }
 
 lv_fs_res_t user_lvgl_impl_fs_close_cb(lv_fs_drv_t *drv, void *file_p) {
+    UNUSED(drv);
+
     int fd = *(int *)file_p;
 
     if(fd > 0) {
@@ -154,6 +159,8 @@ lv_fs_res_t user_lvgl_impl_fs_close_cb(lv_fs_drv_t *drv, void *file_p) {
 
 lv_fs_res_t user_lvgl_impl_fs_read_cb(lv_fs_drv_t *drv, void *file_p, void *buf,
                                       uint32_t btr, uint32_t *br) {
+    UNUSED(drv);
+
     int fd = *(int *)file_p;
 
     if(fd > 0) {
@@ -172,6 +179,8 @@ lv_fs_res_t user_lvgl_impl_fs_read_cb(lv_fs_drv_t *drv, void *file_p, void *buf,
 lv_fs_res_t user_lvgl_impl_fs_write_cb(lv_fs_drv_t *drv, void *file_p,
                                        const void *buf, uint32_t btw,
                                        uint32_t *bw) {
+    UNUSED(drv);
+
     int fd = *(int *)file_p;
 
     if(fd > 0) {
@@ -185,6 +194,8 @@ lv_fs_res_t user_lvgl_impl_fs_write_cb(lv_fs_drv_t *drv, void *file_p,
 
 lv_fs_res_t user_lvgl_impl_fs_seek_cb(lv_fs_drv_t *drv, void *file_p,
                                       uint32_t pos, lv_fs_whence_t whence) {
+    UNUSED(drv);
+
     int fd = *(int *)file_p;
 
     int l_whence = SEEK_SET;
@@ -215,6 +226,8 @@ lv_fs_res_t user_lvgl_impl_fs_seek_cb(lv_fs_drv_t *drv, void *file_p,
 
 lv_fs_res_t user_lvgl_impl_fs_tell_cb(lv_fs_drv_t *drv, void *file_p,
                                       uint32_t *pos_p) {
+    UNUSED(drv);
+
     int fd = *(int *)file_p;
 
     if(fd > 0) {

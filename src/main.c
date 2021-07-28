@@ -6,6 +6,7 @@
 #include <signal.h>
 #include <string.h>
 
+#include "user_common.h"
 #include "drivers/user_config_driver.h"
 #include "drivers/user_spi_driver.h"
 #include "utils/user_log_util.h"
@@ -25,6 +26,9 @@ static void signal_handler(int signo) {
 }
 
 int main(int argc, const char *argv[]) {
+    UNUSED(argc);
+    UNUSED(argv);
+
     USER_LOG(USER_LOG_INFO, "Application started.");
 
     int signal_arr[] = { SIGINT, SIGTERM };

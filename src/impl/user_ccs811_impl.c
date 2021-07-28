@@ -6,10 +6,9 @@
 #include <errno.h>
 #include <string.h>
 
+#include "user_common.h"
 #include "drivers/user_config_driver.h"
-
 #include "utils/user_log_util.h"
-
 #include "impl/user_ccs811_impl.h"
 
 extern user_config_t g_config;
@@ -83,6 +82,7 @@ int user_ccs811_impl_deinit(user_ccs811_impl_t *impl) {
 }
 
 ccs811_ret_t user_ccs811_impl_delay_ms_cb(user_ccs811_impl_t *impl, uint32_t delay_ms) {
+    UNUSED(impl);
     usleep(delay_ms * 1000);
     return CCS_OK;
 }

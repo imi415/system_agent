@@ -1,3 +1,4 @@
+#include "user_common.h"
 #include "tasks/user_task_lvgl_common.h"
 
 pthread_t user_base_task_thread;
@@ -40,6 +41,8 @@ static void event_handler(lv_event_t * e)
 }
 
 void *user_base_task(void *arguments) {
+    UNUSED(arguments);
+
     while(g_running && !g_lvgl_ready) {
         sleep(1);
     }

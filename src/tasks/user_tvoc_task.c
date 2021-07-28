@@ -1,7 +1,7 @@
 #include <stdint.h>
 
+#include "user_common.h"
 #include "impl/user_ccs811_impl.h"
-
 #include "tasks/user_task_lvgl_common.h"
 
 void *user_tvoc_task(void *arguments);
@@ -25,6 +25,7 @@ int user_tvoc_task_deinit(void) {
 }
 
 void *user_tvoc_task(void *arguments) {
+    UNUSED(arguments);
 
     user_ccs811_impl_t impl;
 

@@ -1,5 +1,5 @@
+#include "user_common.h"
 #include "tasks/user_task_lvgl_common.h"
-
 #include "impl/user_lvgl_impl.h"
 
 #define PIXBUF_SIZE 320 * 20
@@ -92,6 +92,7 @@ int user_lvgl_task_deinit(void) {
 }
 
 void *user_lv_task(void *arguments) {
+    UNUSED(arguments);
 
     while(g_running) {
         usleep(30 * 1000);
@@ -104,6 +105,8 @@ void *user_lv_task(void *arguments) {
 }
 
 void *user_lv_tick(void *arguments) {
+    UNUSED(arguments);
+
     while(g_running) {
         usleep(30 * 1000);
         pthread_mutex_lock(&g_lvgl_mutex);

@@ -1,5 +1,6 @@
 #include <stdint.h>
 
+#include "user_common.h"
 #include "impl/user_bme280_impl.h"
 #include "tasks/user_task_lvgl_common.h"
 #include "tasks/user_task_mqtt_common.h"
@@ -25,6 +26,8 @@ int user_dht_task_deinit(void) {
 }
 
 void *user_dht_task(void *arguments) {
+    UNUSED(arguments);
+
     while(g_running && !g_lvgl_ready) {
         sleep(1);
     }

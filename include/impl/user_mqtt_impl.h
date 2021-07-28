@@ -8,6 +8,7 @@
 
 typedef struct {
     struct mosquitto *mosq;
+    char topic[32];
 } user_mqtt_impl_t;
 
 int user_mqtt_impl_init(user_mqtt_impl_t *handle);

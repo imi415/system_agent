@@ -1,5 +1,5 @@
+#include "user_common.h"
 #include "tasks/user_task_lvgl_common.h"
-
 #include "impl/user_mqtt_impl.h"
 
 static user_mqtt_impl_t s_mqtt_impl;
@@ -41,6 +41,8 @@ int user_mqtt_task_deinit(void) {
 }
 
 void *user_mqtt_task(void *arguments) {
+    UNUSED(arguments);
+
     user_mqtt_impl_init(&s_mqtt_impl);
     mqtt_influx_init(&g_mqtt_influx);
 

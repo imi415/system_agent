@@ -5,10 +5,9 @@
 #include <errno.h>
 #include <string.h>
 
+#include "user_common.h"
 #include "drivers/user_config_driver.h"
-
 #include "utils/user_log_util.h"
-
 #include "impl/user_bme280_impl.h"
 
 extern user_config_t g_config;
@@ -79,6 +78,7 @@ bme280_ret_t user_bme280_impl_write_register_cb(user_bme280_impl_t *impl,
 }
 
 bme280_ret_t user_bme280_impl_delay_cb(user_bme280_impl_t *impl, uint32_t delay_ms) {
+    UNUSED(impl);
     usleep(delay_ms * 1000);
     return BME_OK;
 }
