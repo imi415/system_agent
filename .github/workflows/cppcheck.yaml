@@ -47,6 +47,6 @@ jobs:
       uses: "actions/upload-artifact@v2"
       if: ${{ failure() }}
       with:
-        name: "sa-report-${{ env.GITHUB_SHA }}"
+        name: ${{ format('sa-report-{0}', env.GITHUB_SHA) }}
         path: "build/report"
         retention-days: 30
