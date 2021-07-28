@@ -39,14 +39,14 @@ jobs:
       run: "codechecker parse -e html ./results -o ./report"
       working-directory: "build"
 
-    - name: "Save HTML reports to artifact"
-      uses: "actions/upload-artifact@v2"
-      with:
-        name: "static-check-report"
-        path: "build/report"
-        retention-days: 30
-
     - name: "Dump report to stderr"
       run: "codechecker parse --print-steps ./results"
       working-directory: "build"
 
+    - name: "Save HTML reports to artifact"
+      uses: "actions/upload-artifact@v2"
+      if: ${{ failure() }}
+      with:
+        name: "sa-report-${{ env.GITHUB_SHA }}"
+        path: "build/report"
+        retention-days: 30
