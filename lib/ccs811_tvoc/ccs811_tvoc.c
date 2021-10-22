@@ -26,7 +26,7 @@ ccs811_ret_t ccs811_read_baseline(ccs811_t *ccs, uint8_t *baseline) {
     return CCS_OK;
 }
 
-ccs811_ret_t ccs811_store_baseline(ccs811_t *ccs, uint8_t *baseline) {
+ccs811_ret_t ccs811_restore_baseline(ccs811_t *ccs, uint8_t *baseline) {
     ccs->cb.write_register_cb(ccs->user_data, 0x11, baseline, 0x02);
     return CCS_OK;
 }

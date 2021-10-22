@@ -278,6 +278,7 @@ int user_mqtt_impl_init(user_mqtt_impl_t *handle) {
  * @return 0 if success, negative value if error.
  */
 int user_mqtt_impl_deinit(user_mqtt_impl_t *handle) {
+    handle->ready = false;
     mosquitto_disconnect(handle->mosq);
     mosquitto_destroy(handle->mosq);
     mosquitto_lib_cleanup();

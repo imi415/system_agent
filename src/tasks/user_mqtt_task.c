@@ -58,5 +58,7 @@ void *user_mqtt_task(void *arguments) {
         usleep(5 * 1000);
     }
 
+    user_mqtt_impl_deinit(&s_mqtt_impl);
+
     return NULL;
 }

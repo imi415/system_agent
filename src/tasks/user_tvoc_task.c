@@ -51,6 +51,7 @@ void *user_tvoc_task(void *arguments) {
     while(g_running) {
         ccs811_result_t result;
         ccs811_measure(&ccs, &result);
+        USER_LOG(USER_LOG_INFO, "CCS: eTVOC: %dppb, eCO2: %dppm", result.tvoc, result.eco2);
         sleep(1);
     }
 

@@ -28,7 +28,7 @@ typedef struct {
 ccs811_ret_t ccs811_init(ccs811_t *ccs);
 ccs811_ret_t ccs811_set_env_data(ccs811_t *ccs, double temperature, double humidity);
 ccs811_ret_t ccs811_read_baseline(ccs811_t *ccs, uint8_t *baseline);
-ccs811_ret_t ccs811_store_baseline(ccs811_t *ccs, uint8_t *baseline);
+ccs811_ret_t ccs811_restore_baseline(ccs811_t *ccs, uint8_t *baseline);
 ccs811_ret_t ccs811_measure(ccs811_t *ccs, ccs811_result_t *result);
 
 #endif
