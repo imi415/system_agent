@@ -77,16 +77,17 @@ bme280_ret_t bme280_measure(bme280_t *bme, bme280_result_t *result) {
     uint8_t status = 0;
     uint8_t ctrl_meas;
     uint8_t loop_count = 0;
-    bme->cb.read_register_cb(bme->user_data, 0xF4, &ctrl_meas, 0x01);
+    if(bme->cb.read_register_cb(bme->user_data, 0xF4, &ctrl_meas, 0x01) != BME_OK) return BME_FAIL;
+
     bme->cb.write_register_cb(bme->user_data, 0xF4,
                               ctrl_meas | BME_MODE_FORCED);
     do {
-        bme->cb.read_register_cb(bme->user_data, 0xF3, &status, 0x01);
+        if(bme->cb.read_register_cb(bme->user_data, 0xF3, &status, 0x01) != BME_OK) return BME_FAIL;
         loop_count++;
         bme->cb.delay_cb(bme->user_data, 100);
     } while(status & 0x08 && (loop_count < 12));
-    bme->cb.read_register_cb(bme->user_data, 0xF7, measure_data, 0x08);
 
+    if(bme->cb.read_register_cb(bme->user_data, 0xF7, measure_data, 0x08) != BME_OK) return BME_FAIL;
     raw_P = ((uint32_t)measure_data[0] << 12) | ((uint32_t)measure_data[1] << 0x04) | ((uint32_t)measure_data[2] >> 0x04);
     raw_T = ((uint32_t)measure_data[3] << 12) | ((uint32_t)measure_data[4] << 0x04) | ((uint32_t)measure_data[5] >> 0x04);
     raw_H = ((uint32_t)measure_data[6] << 8) | ((uint32_t)measure_data[7]);

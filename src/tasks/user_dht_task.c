@@ -33,7 +33,10 @@ void *user_dht_task(void *arguments) {
     }
 
     user_bme280_impl_t bme_impl;
-    user_bme280_impl_init(&bme_impl);
+    if(user_bme280_impl_init(&bme_impl) != 0) {
+        USER_LOG(USER_LOG_FATAL, "Failed to init BME280 implementation.");
+        return NULL;
+    }
 
     bme280_t bme = {
         .cb =
