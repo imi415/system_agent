@@ -73,15 +73,22 @@ agent: {
             logging_enabled = true;
         };
         mqtt: {
+            server: {
+                host = "127.0.0.1";
+                port = 1883;
+                keepalive = 30;
+                topic = "";
+            };
             client: {
                 id_prefix = "";
-                server_host = "127.0.0.1";
-                server_port = 1883;
+                username = "";
+                password = "";
             };
             tls: {
                 enabled = false;
                 psk = "";
-                ca_file = "";
+                ca_file = ""; # Either ca_file or ca_path must not be null.
+                ca_path = "";
                 client_cert_file = "";
                 client_key_file = "";
             };

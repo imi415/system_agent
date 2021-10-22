@@ -32,6 +32,10 @@ mqtt_influx_ret_t mqtt_influx_publish_measurement(mqtt_influx_t *influx,
     char mqtt_buf[MAX_MQTT_REPORT_SIZE];
     char ns_ts[32];
 
+    if(!influx->cb.ready_cb(influx->user_data)) {
+        return MQTT_INFLUX_ERROR;
+    }
+
     if(influx->cb.get_nsec_timestamp_cb(influx->user_data, ns_ts) !=
        MQTT_INFLUX_OK) {
         return MQTT_INFLUX_ERROR;

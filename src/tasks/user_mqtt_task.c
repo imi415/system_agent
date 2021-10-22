@@ -5,10 +5,11 @@
 static user_mqtt_impl_t s_mqtt_impl;
 
 mqtt_influx_t g_mqtt_influx = {
-    .cb = {.get_nsec_timestamp_cb = (mqtt_influx_ret_t(*)(
-               void *, char *))user_mqtt_get_nsec_timestamp_cb,
-           .publish_message_cb = (mqtt_influx_ret_t(*)(
-               void *, char *))user_mqtt_publish_message_cb},
+    .cb = {
+        .get_nsec_timestamp_cb = (mqtt_influx_ret_t(*)(void *, char *))user_mqtt_get_nsec_timestamp_cb,
+        .publish_message_cb = (mqtt_influx_ret_t(*)(void *, char *))user_mqtt_publish_message_cb,
+        .ready_cb = (bool(*)(void *))user_mqtt_ready_cb,
+    },
     .user_data = &s_mqtt_impl,
     .hostname = "SystemAgent",
 };
@@ -47,7 +48,8 @@ void *user_mqtt_task(void *arguments) {
     mqtt_influx_init(&g_mqtt_influx);
 
     while(g_running) {
-        sleep(1);
+        user_mqtt_network_loop(&s_mqtt_impl);
+        usleep(5 * 1000);
     }
 
     return NULL;

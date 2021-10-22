@@ -2,6 +2,7 @@
 #define MQTT_INFLUX_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef enum {
     MQTT_INFLUX_OK,
@@ -11,6 +12,7 @@ typedef enum {
 typedef struct {
     mqtt_influx_ret_t (*get_nsec_timestamp_cb)(void *handle, char *timestamp_string);
     mqtt_influx_ret_t (*publish_message_cb)(void *handle, char *data);
+    bool (*ready_cb)(void *handle);
 } mqtt_influx_cb_t;
 
 typedef struct {

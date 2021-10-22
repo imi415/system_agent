@@ -16,3 +16,7 @@ int user_system_get_systemd_unique_id(char *uuid) {
 
     return 0;
 }
+
+int user_system_get_primary_mac_address(char *mac_addr) {
+    return 0;
+}
