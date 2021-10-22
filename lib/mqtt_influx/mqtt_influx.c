@@ -45,13 +45,21 @@ mqtt_influx_ret_t mqtt_influx_publish_measurement(mqtt_influx_t *influx,
         mqtt_buf[i] = '\0';
     }
 
+    mqtt_influx_measure_item_t *item_ptr = meas->first_item;
+
     concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, meas->measurement);
     concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, ",hostname=");
     concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, influx->hostname);
     concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, " ");
-    concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, meas->key);
-    concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, "=");
-    concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, meas->value);
+    do {
+        concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, item_ptr->key);
+        concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, "=");
+        concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, item_ptr->value);
+        item_ptr = item_ptr->next;
+        if(item_ptr) {
+            concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, ",");
+        }
+    } while(item_ptr != (void *)0);
     concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, " ");
     concat_string(mqtt_buf, MAX_MQTT_REPORT_SIZE, ns_ts);
 

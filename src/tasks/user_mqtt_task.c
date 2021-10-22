@@ -44,11 +44,17 @@ int user_mqtt_task_deinit(void) {
 void *user_mqtt_task(void *arguments) {
     UNUSED(arguments);
 
-    user_mqtt_impl_init(&s_mqtt_impl);
+    if(user_mqtt_impl_init(&s_mqtt_impl) != 0) {
+        USER_LOG(USER_LOG_ERROR, "MQTT implementation init failed.");
+        return NULL;
+    }
+
     mqtt_influx_init(&g_mqtt_influx);
 
     while(g_running) {
-        user_mqtt_network_loop(&s_mqtt_impl);
+        if(user_mqtt_network_loop(&s_mqtt_impl) !=0) {
+            USER_LOG(USER_LOG_ERROR, "MQTT network loop returned failure.");
+        }
         usleep(5 * 1000);
     }
 

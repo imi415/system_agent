@@ -23,6 +23,8 @@ extern user_config_t g_config;
  * http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html
  */
 static void user_moqtt_impl_cb_on_connect(struct mosquitto *mosq, void *obj, int rc) {
+    UNUSED(mosq);
+
     switch(rc) {
         case 0:
         USER_LOG(USER_LOG_INFO, "MQTT connection accepted.");
@@ -63,6 +65,9 @@ static void user_moqtt_impl_cb_on_connect(struct mosquitto *mosq, void *obj, int
  * @param rc disconnect reason, 0 is expected.
  */
 static void user_mqtt_impl_cb_on_disconnect(struct mosquitto *mosq, void *obj, int rc) {
+    UNUSED(mosq);
+    UNUSED(obj);
+
     if(rc != 0) {
         USER_LOG(USER_LOG_WARN, "MQTT received unexpected disconnect event (%d).", rc);
     } else {
@@ -79,6 +84,9 @@ static void user_mqtt_impl_cb_on_disconnect(struct mosquitto *mosq, void *obj, i
  * @param str log message
  */
 static void user_mqtt_impl_cb_log(struct mosquitto *mosq, void *obj, int level, const char *str) {
+    UNUSED(mosq);
+    UNUSED(obj);
+
     user_log_level_t log_level;
 
     switch(level) {
@@ -270,6 +278,7 @@ int user_mqtt_impl_init(user_mqtt_impl_t *handle) {
  * @return 0 if success, negative value if error.
  */
 int user_mqtt_impl_deinit(user_mqtt_impl_t *handle) {
+    mosquitto_disconnect(handle->mosq);
     mosquitto_destroy(handle->mosq);
     mosquitto_lib_cleanup();
 

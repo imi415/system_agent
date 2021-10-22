@@ -72,6 +72,27 @@ agent: {
             fs_base = "lvgl_fs";
             logging_enabled = false;
         };
+        mqtt: {
+            server: {
+                host = "127.0.0.1";
+                port = 1883;
+                keepalive = 30;
+                topic = "test_topic";
+            };
+            client: {
+                id_prefix = "SA_";
+                username = "test_account";
+                password = "test_password";
+            };
+            tls: {
+                enabled = true;
+                psk = "";
+                ca_file = ""; # Either ca_file or ca_path must not be null.
+                ca_path = "/etc/ca-certificates";
+                client_cert_file = "";
+                client_key_file = "";
+            };
+        };
     };
 
     theme: {

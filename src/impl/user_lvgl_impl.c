@@ -144,13 +144,11 @@ lv_fs_res_t user_lvgl_impl_fs_close_cb(lv_fs_drv_t *drv, void *file_p) {
     int fd = *(int *)file_p;
 
     if(fd > 0) {
+        USER_LOG(USER_LOG_DEBUG, "Free'd fd %d@%p", fd, file_p);
         free(file_p);
 
-        USER_LOG(USER_LOG_DEBUG, "Free'd fd %d@%p", fd, file_p);
-
-        close(fd);
-
         USER_LOG(USER_LOG_DEBUG, "Called close() on fd %d", fd);
+        close(fd);
 
         return LV_FS_RES_OK;
     }

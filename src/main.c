@@ -32,7 +32,7 @@ int main(int argc, const char *argv[]) {
     USER_LOG(USER_LOG_INFO, "Application started.");
 
     int signal_arr[] = { SIGINT, SIGTERM };
-    for(uint8_t i = 0; i < sizeof(signal_arr) / sizeof(int); i++) {
+    for(unsigned int i = 0; i < sizeof(signal_arr) / sizeof(int); i++) {
         if(signal(signal_arr[i], signal_handler) == SIG_ERR) {
             USER_LOG(USER_LOG_FATAL, "Cannot register signal handler %s.", strsignal(signal_arr[i]));
             return -1;

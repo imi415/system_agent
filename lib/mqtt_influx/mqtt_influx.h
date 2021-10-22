@@ -16,9 +16,14 @@ typedef struct {
 } mqtt_influx_cb_t;
 
 typedef struct {
-    char *measurement;
     char *key;
     char *value;
+    void *next;
+} mqtt_influx_measure_item_t;
+
+typedef struct {
+    char *measurement;
+    mqtt_influx_measure_item_t *first_item;
 } mqtt_influx_measure_t;
 
 typedef struct {
